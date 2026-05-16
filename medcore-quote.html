@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Request a customised quote from MedCore Solutions for medical equipment, surgical instruments, laboratory devices and consumables."/>
+<meta property="og:title" content="Request a Quote — MedCore Solutions"/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E8C8C'/><text y='.9em' font-size='72' x='50%' dominant-baseline='auto' text-anchor='middle' font-family='serif' fill='white'>M</text></svg>"/>
+<title>Request a Quote — MedCore Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy:#0B1F3A; --navy-mid:#12305A; --teal:#0E8C8C; --teal-light:#14AAAA;
+  --gold:#C89B3C; --gold-light:#E5B84A; --white:#FAFCFF; --off-white:#EEF2F7;
+  --text-dark:#0B1F3A; --text-mid:#3B5070; --text-light:#7A92AC;
+  --border:rgba(11,31,58,0.12); --error:#D94F4F; --success:#1A9E6E;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-dark);min-height:100vh;}
+
+/* NAV */
+nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,155,60,0.2);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal),var(--teal-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:white;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:white;}
+.nav-logo-text span{color:var(--gold);}
+.nav-back{color:rgba(255,255,255,0.6);text-decoration:none;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.nav-back:hover{color:var(--gold-light);}
+
+/* LAYOUT */
+.page{max-width:1100px;margin:0 auto;padding:40px 24px 80px;}
+.page-header{text-align:center;margin-bottom:48px;}
+.page-tag{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:600;color:var(--navy);margin-bottom:10px;}
+.page-header p{font-size:15px;color:var(--text-mid);font-weight:300;max-width:480px;margin:0 auto;line-height:1.7;}
+
+/* STEPPER */
+.stepper{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px;}
+.step{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;}
+.step-circle{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text-light);transition:all 0.3s;z-index:1;}
+.step.active .step-circle{border-color:var(--teal);background:var(--teal);color:white;box-shadow:0 0 0 4px rgba(14,140,140,0.15);}
+.step.done .step-circle{border-color:var(--teal);background:var(--teal);color:white;}
+.step.done .step-circle::after{content:'✓';}
+.step.done .step-num{display:none;}
+.step-label{font-size:12px;font-weight:500;color:var(--text-light);white-space:nowrap;}
+.step.active .step-label{color:var(--teal);font-weight:600;}
+.step.done .step-label{color:var(--text-mid);}
+.step-line{width:80px;height:2px;background:var(--border);margin-bottom:20px;transition:background 0.3s;}
+.step-line.done{background:var(--teal);}
+
+/* CARD */
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(11,31,58,0.06);}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:13px;font-weight:600;color:var(--text-dark);letter-spacing:0.2px;}
+label span{color:var(--error);margin-left:2px;}
+input,select,textarea{
+  padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-dark);
+  background:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  width:100%;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,140,140,0.1);}
+input.error,select.error{border-color:var(--error);}
+.error-msg{font-size:12px;color:var(--error);margin-top:2px;}
+textarea{resize:vertical;min-height:90px;}
+select{cursor:pointer;}
+
+/* PRODUCTS */
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.cat-tab{padding:8px 18px;border-radius:100px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
+.cat-tab.active{border-color:var(--teal);background:rgba(14,140,140,0.08);color:var(--teal);font-weight:600;}
+.products-table{width:100%;border-collapse:collapse;}
+.products-table thead tr{border-bottom:2px solid var(--border);}
+.products-table th{text-align:left;padding:10px 12px;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);}
+.products-table td{padding:14px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.products-table tr:last-child td{border-bottom:none;}
+.products-table tr:hover td{background:rgba(14,140,140,0.03);}
+.prod-name{font-size:14px;font-weight:600;color:var(--navy);}
+.prod-unit{font-size:12px;color:var(--text-light);margin-top:2px;}
+.tiers{display:flex;gap:6px;flex-wrap:wrap;}
+.tier{padding:4px 9px;border-radius:100px;font-size:11px;font-weight:500;border:1px solid var(--border);color:var(--text-mid);white-space:nowrap;}
+.tier.active-tier{border-color:var(--teal);background:rgba(14,140,140,0.1);color:var(--teal);font-weight:600;}
+.qty-input{width:80px;text-align:center;padding:8px 10px;}
+.unit-price{font-size:14px;font-weight:600;color:var(--teal);min-width:90px;display:inline-block;}
+.line-total{font-size:14px;font-weight:600;color:var(--navy);min-width:100px;display:inline-block;}
+.add-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:16px;display:inline-flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--teal);}
+.add-btn:hover{border-color:var(--teal);background:rgba(14,140,140,0.08);}
+.add-btn.added{border-color:var(--teal);background:var(--teal);color:white;}
+
+/* CART SUMMARY */
+.cart-bar{background:var(--navy);border-radius:12px;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:24px;gap:16px;flex-wrap:wrap;}
+.cart-bar-left{font-size:14px;color:rgba(255,255,255,0.7);}
+.cart-bar-left strong{color:white;font-size:16px;}
+.cart-count{background:var(--teal);color:white;border-radius:100px;padding:2px 10px;font-size:12px;font-weight:600;margin-left:8px;}
+
+/* REVIEW */
+.review-section{margin-bottom:32px;}
+.review-section h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.review-field label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);}
+.review-field p{font-size:14px;color:var(--text-dark);font-weight:500;margin-top:2px;}
+.review-table{width:100%;border-collapse:collapse;}
+.review-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);border-bottom:2px solid var(--border);}
+.review-table td{padding:12px;border-bottom:1px solid var(--border);font-size:14px;}
+.review-table tr:last-child td{border-bottom:none;}
+.totals-box{background:var(--off-white);border-radius:10px;padding:20px 24px;margin-top:16px;}
+.totals-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px;}
+.totals-row.grand{border-top:2px solid var(--border);margin-top:8px;padding-top:14px;font-size:17px;font-weight:700;color:var(--navy);}
+.totals-row.grand .totals-val{color:var(--teal);}
+.discount-badge{background:rgba(26,158,110,0.1);color:var(--success);border-radius:100px;padding:2px 10px;font-size:11px;font-weight:600;margin-left:8px;}
+
+/* ACTIONS */
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:32px;flex-wrap:wrap;gap:16px;}
+.btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal-light));color:white;padding:13px 30px;border-radius:8px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(14,140,140,0.3);font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(14,140,140,0.4);}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.btn-secondary{background:white;color:var(--text-mid);padding:13px 24px;border-radius:8px;font-size:15px;font-weight:500;border:1.5px solid var(--border);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{border-color:var(--text-mid);color:var(--navy);}
+
+/* SUCCESS */
+.success-screen{text-align:center;padding:60px 20px;}
+.success-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(26,158,110,0.1);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px;border:2px solid rgba(26,158,110,0.3);}
+.success-screen h2{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--navy);margin-bottom:12px;}
+.success-screen p{font-size:15px;color:var(--text-mid);max-width:460px;margin:0 auto 32px;line-height:1.75;font-weight:300;}
+.ref-box{background:var(--off-white);border:1px solid var(--border);border-radius:10px;padding:16px 24px;display:inline-block;margin-bottom:32px;}
+.ref-box p{font-size:12px;color:var(--text-light);margin-bottom:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.ref-box h4{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--navy);}
+
+/* NOTICE */
+.notice{background:rgba(14,140,140,0.06);border:1px solid rgba(14,140,140,0.2);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--text-mid);margin-top:16px;line-height:1.6;}
+.notice strong{color:var(--teal);}
+
+/* ── RESPONSIVE ── */
+
+/* Tablet (≤700px) */
+@media(max-width:700px){
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .review-grid{grid-template-columns:1fr;}
+  .card{padding:24px;}
+  .step-line{width:40px;}
+  th.hide-mobile,td.hide-mobile{display:none;}
+}
+
+/* Mobile (≤560px) */
+@media(max-width:560px){
+  /* Nav */
+  nav{height:58px;padding:0 16px;}
+  .nav-logo-text{font-size:15px;}
+  .nav-back{font-size:12px;}
+
+  /* Page */
+  .page{padding:24px 12px 56px;}
+  .page-header h1{font-size:26px;}
+  .page-header p{font-size:13.5px;}
+
+  /* Stepper — shrink labels */
+  .stepper{gap:0;margin-bottom:32px;}
+  .step-circle{width:34px;height:34px;font-size:13px;}
+  .step-label{font-size:10px;}
+  .step-line{width:28px;}
+
+  /* Card */
+  .card{padding:18px 14px;}
+
+  /* Form inputs — larger touch targets */
+  input,select,textarea{padding:13px 12px;font-size:15px;} /* 15px prevents iOS zoom */
+  label{font-size:12.5px;}
+
+  /* Product table — horizontal scroll on small screens */
+  #productTable{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .products-table{min-width:480px;}
+  .cat-tab{padding:7px 14px;font-size:12px;}
+
+  /* Cart bar */
+  .cart-bar{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 16px;}
+
+  /* Actions — stack buttons */
+  .actions{flex-direction:column-reverse;gap:10px;}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center;text-align:center;}
+
+  /* Review table */
+  .review-table td,.review-table th{padding:10px 8px;font-size:13px;}
+
+  /* Totals */
+  .totals-box{padding:16px;}
+  .totals-row{font-size:13px;}
+  .totals-row.grand{font-size:15px;}
+
+  /* Success screen */
+  .success-screen{padding:40px 12px;}
+  .success-screen h2{font-size:28px;}
+  .success-actions{flex-direction:column;align-items:stretch;}
+  .success-actions .btn-primary,
+  .success-actions .btn-secondary{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="medcore-landing.html">
+    <div class="nav-logo-mark">M</div>
+    <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
+  </a>
+  <a class="nav-back" href="medcore-landing.html">← Back to Website</a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-tag">Quote Request</div>
+    <h1>Request a Customised Quote</h1>
+    <p>Select your products, quantities, and details — we'll respond within 24 business hours with a formal proposal.</p>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step active" id="s1">
+      <div class="step-circle"><span class="step-num">1</span></div>
+      <div class="step-label">Your Details</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="s2">
+      <div class="step-circle"><span class="step-num">2</span></div>
+      <div class="step-label">Select Products</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="s3">
+      <div class="step-circle"><span class="step-num">3</span></div>
+      <div class="step-label">Review & Submit</div>
+    </div>
+  </div>
+
+  <!-- STEP 1: CUSTOMER DETAILS -->
+  <div class="card" id="step1">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name <span>*</span></label>
+        <input type="text" id="firstName" placeholder="e.g. John"/>
+        <div class="error-msg" id="err-firstName"></div>
+      </div>
+      <div class="form-group">
+        <label>Last Name <span>*</span></label>
+        <input type="text" id="lastName" placeholder="e.g. Smith"/>
+        <div class="error-msg" id="err-lastName"></div>
+      </div>
+      <div class="form-group">
+        <label>Organisation / Facility Name <span>*</span></label>
+        <input type="text" id="organisation" placeholder="e.g. Metro General Hospital"/>
+        <div class="error-msg" id="err-organisation"></div>
+      </div>
+      <div class="form-group">
+        <label>Facility Type <span>*</span></label>
+        <select id="facilityType">
+          <option value="">Select facility type…</option>
+          <option>Large Hospital / Health System</option>
+          <option>Medium Hospital</option>
+          <option>Specialist Clinic</option>
+          <option>General Practice / Primary Care</option>
+          <option>Diagnostic Lab</option>
+          <option>Pharmacy / Distributor</option>
+          <option>NGO / Non-Profit</option>
+          <option>Government / Public Health</option>
+          <option>Other</option>
+        </select>
+        <div class="error-msg" id="err-facilityType"></div>
+      </div>
+      <div class="form-group">
+        <label>Email Address <span>*</span></label>
+        <input type="email" id="email" placeholder="you@organisation.com"/>
+        <div class="error-msg" id="err-email"></div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number <span>*</span></label>
+        <input type="tel" id="phone" placeholder="+1 (555) 000-0000"/>
+        <div class="error-msg" id="err-phone"></div>
+      </div>
+      <div class="form-group">
+        <label>Country <span>*</span></label>
+        <select id="country">
+          <option value="">Select country…</option>
+          <option>United States</option><option>United Kingdom</option>
+          <option>Canada</option><option>Australia</option>
+          <option>Germany</option><option>France</option>
+          <option>Singapore</option><option>UAE</option>
+          <option>South Africa</option><option>Nigeria</option>
+          <option>Kenya</option><option>India</option>
+          <option>Philippines</option><option>Malaysia</option>
+          <option>Brazil</option><option>Mexico</option>
+          <option>Other</option>
+        </select>
+        <div class="error-msg" id="err-country"></div>
+      </div>
+      <div class="form-group">
+        <label>Preferred Delivery Date</label>
+        <input type="date" id="deliveryDate"/>
+      </div>
+      <div class="form-group full">
+        <label>Special Requirements / Notes</label>
+        <textarea id="notes" placeholder="Any specific certifications needed, delivery instructions, or additional context…"></textarea>
+      </div>
+    </div>
+    <div class="actions">
+      <span></span>
+      <button class="btn-primary" onclick="goStep2()">Next: Select Products →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PRODUCT SELECTION -->
+  <div class="card" id="step2" style="display:none;">
+    <div class="cat-tabs" id="catTabs"></div>
+    <div id="productTable"></div>
+    <div class="cart-bar">
+      <div class="cart-bar-left">
+        Items selected: <strong id="cartCount">0</strong><span class="cart-count" id="cartBadge">0 lines</span>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:white;">
+        Estimated Total: <span id="cartTotal" style="color:var(--gold-light);">$0.00</span>
+      </div>
+    </div>
+    <div class="notice"><strong>Volume pricing</strong> is automatically applied as you enter quantities. Prices shown are indicative — your final quote will reflect confirmed volumes and any applicable contract discounts.</div>
+    <div class="actions">
+      <button class="btn-secondary" onclick="goStep1()">← Back</button>
+      <button class="btn-primary" onclick="goStep3()" id="toStep3Btn" disabled>Review Quote →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: REVIEW -->
+  <div class="card" id="step3" style="display:none;">
+    <div class="review-section">
+      <h3>📋 Customer Details</h3>
+      <div class="review-grid" id="reviewDetails"></div>
+    </div>
+    <div class="review-section">
+      <h3>🛒 Requested Products</h3>
+      <table class="review-table">
+        <thead><tr>
+          <th>Product</th>
+          <th class="hide-mobile">Category</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Line Total</th>
+        </tr></thead>
+        <tbody id="reviewItems"></tbody>
+      </table>
+      <div class="totals-box" id="totalsBox"></div>
+    </div>
+    <div class="notice">
+      <strong>What happens next?</strong> Submitting this form will open your email client with a pre-filled quote request. Once sent, our sales team will review your requirements and send a formal PDF proposal within 24 business hours.
+    </div>
+    <div class="actions">
+      <button class="btn-secondary" onclick="goStep2Back()">← Edit Products</button>
+      <button class="btn-primary" onclick="submitQuote()">✉️ Send Quote Request</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="successScreen" style="display:none;">
+    <div class="card success-screen">
+      <div class="success-icon">✅</div>
+      <h2>Quote Request Sent!</h2>
+      <p>Thank you! Your quote request has been submitted. Our sales team will review your requirements and send a formal proposal to your email within <strong>24 business hours</strong>.</p>
+      <div class="ref-box">
+        <p>Your Reference Number</p>
+        <h4 id="refNumber">MC-XXXXXX</h4>
+      </div>
+      <div class="success-actions">
+        <button class="btn-primary" onclick="window.print()">🖨️ Print Summary</button>
+        <a href="medcore-landing.html"><button class="btn-secondary">← Back to Website</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const PRODUCTS = {
+  "Large Devices": [
+    { id:"LD1", name:"MRI System (1.5T)", unit:"per unit",
+      tiers:[{min:1,max:2,price:820000},{min:3,max:5,price:775000},{min:6,max:999,price:720000}]},
+    { id:"LD2", name:"CT Scanner (64-Slice)", unit:"per unit",
+      tiers:[{min:1,max:2,price:310000},{min:3,max:5,price:285000},{min:6,max:999,price:260000}]},
+    { id:"LD3", name:"Digital X-Ray System", unit:"per unit",
+      tiers:[{min:1,max:2,price:48000},{min:3,max:5,price:42000},{min:6,max:999,price:37000}]},
+    { id:"LD4", name:"ICU Ventilator", unit:"per unit",
+      tiers:[{min:1,max:5,price:26000},{min:6,max:20,price:23000},{min:21,max:999,price:19500}]},
+    { id:"LD5", name:"Surgical Table (Electric)", unit:"per unit",
+      tiers:[{min:1,max:3,price:22000},{min:4,max:10,price:19000},{min:11,max:999,price:16500}]},
+  ],
+  "Medium Devices": [
+    { id:"MD1", name:"Ultrasound Machine (Portable)", unit:"per unit",
+      tiers:[{min:1,max:3,price:36000},{min:4,max:10,price:31000},{min:11,max:999,price:26000}]},
+    { id:"MD2", name:"Defibrillator (AED+Manual)", unit:"per unit",
+      tiers:[{min:1,max:5,price:8500},{min:6,max:15,price:7400},{min:16,max:999,price:6300}]},
+    { id:"MD3", name:"12-Lead ECG System", unit:"per unit",
+      tiers:[{min:1,max:5,price:4800},{min:6,max:20,price:4200},{min:21,max:999,price:3600}]},
+    { id:"MD4", name:"Infusion Pump (Volumetric)", unit:"per unit",
+      tiers:[{min:1,max:10,price:3600},{min:11,max:30,price:3100},{min:31,max:999,price:2600}]},
+    { id:"MD5", name:"Hematology Analyzer (5-Part)", unit:"per unit",
+      tiers:[{min:1,max:2,price:18000},{min:3,max:6,price:16000},{min:7,max:999,price:14000}]},
+  ],
+  "Small Devices": [
+    { id:"SD1", name:"Pulse Oximeter", unit:"per unit",
+      tiers:[{min:1,max:20,price:155},{min:21,max:100,price:125},{min:101,max:9999,price:98}]},
+    { id:"SD2", name:"Blood Glucose Meter", unit:"per unit",
+      tiers:[{min:1,max:20,price:85},{min:21,max:100,price:68},{min:101,max:9999,price:52}]},
+    { id:"SD3", name:"Nebulizer (Compressor)", unit:"per unit",
+      tiers:[{min:1,max:20,price:210},{min:21,max:100,price:175},{min:101,max:9999,price:145}]},
+    { id:"SD4", name:"Digital Thermometer", unit:"per unit",
+      tiers:[{min:1,max:50,price:28},{min:51,max:200,price:22},{min:201,max:9999,price:16}]},
+    { id:"SD5", name:"Digital Blood Pressure Monitor", unit:"per unit",
+      tiers:[{min:1,max:20,price:180},{min:21,max:100,price:150},{min:101,max:9999,price:120}]},
+  ],
+  "Consumables": [
+    { id:"CO1", name:"Latex Exam Gloves", unit:"per box (100 pcs)",
+      tiers:[{min:1,max:50,price:12},{min:51,max:200,price:9.5},{min:201,max:9999,price:7.5}]},
+    { id:"CO2", name:"Disposable Syringes", unit:"per box (100 pcs)",
+      tiers:[{min:1,max:50,price:16},{min:51,max:200,price:13},{min:201,max:9999,price:9.5}]},
+    { id:"CO3", name:"IV Infusion Sets", unit:"per box (50 pcs)",
+      tiers:[{min:1,max:50,price:46},{min:51,max:200,price:39},{min:201,max:9999,price:31}]},
+    { id:"CO4", name:"Wound Care Kit", unit:"per kit",
+      tiers:[{min:1,max:50,price:36},{min:51,max:200,price:29},{min:201,max:9999,price:23}]},
+    { id:"CO5", name:"Surgical Face Masks", unit:"per box (50 pcs)",
+      tiers:[{min:1,max:100,price:8},{min:101,max:500,price:6.5},{min:501,max:9999,price:5}]},
+    { id:"CO6", name:"Diagnostic Rapid Test Kits", unit:"per box (25 pcs)",
+      tiers:[{min:1,max:50,price:55},{min:51,max:200,price:46},{min:201,max:9999,price:38}]},
+  ]
+};
+
+const cart = {}; // { productId: qty }
+let activeCategory = Object.keys(PRODUCTS)[0];
+
+function fmt(n){ return 'KES '+Number(n).toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function getPrice(product, qty){
+  if(!qty||qty<1) return product.tiers[0].price;
+  for(const t of product.tiers){ if(qty>=t.min && qty<=t.max) return t.price; }
+  return product.tiers[product.tiers.length-1].price;
+}
+
+function getTierLabel(t){ return t.max>=9000 ? `${t.min}+` : t.min===t.max ? `${t.min}` : `${t.min}–${t.max}`; }
+
+function getProductById(id){
+  for(const cat of Object.values(PRODUCTS)){ const p=cat.find(x=>x.id===id); if(p) return p; }
+}
+
+// ── RENDER PRODUCT TABLE ──
+function renderProducts(){
+  const cats = Object.keys(PRODUCTS);
+  // tabs
+  const tabsEl = document.getElementById('catTabs');
+  tabsEl.innerHTML = cats.map(c=>
+    `<div class="cat-tab${c===activeCategory?' active':''}" onclick="switchCat('${c}')">${c}</div>`
+  ).join('');
+
+  const prods = PRODUCTS[activeCategory];
+  const tableEl = document.getElementById('productTable');
+  tableEl.innerHTML = `
+    <table class="products-table">
+      <thead><tr>
+        <th>Product</th>
+        <th class="hide-mobile">Volume Pricing Tiers</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Line Total</th>
+        <th></th>
+      </tr></thead>
+      <tbody>
+        ${prods.map(p => {
+          const qty = cart[p.id]||0;
+          const price = getPrice(p,qty);
+          const total = qty*price;
+          return `
+          <tr id="row-${p.id}">
+            <td><div class="prod-name">${p.name}</div><div class="prod-unit">${p.unit}</div></td>
+            <td class="hide-mobile"><div class="tiers">${p.tiers.map(t=>
+              `<span class="tier${qty>=t.min&&qty<=t.max?' active-tier':''}">${getTierLabel(t)}: ${fmt(t.price)}</span>`
+            ).join('')}</div></td>
+            <td><input class="qty-input" type="number" min="0" value="${qty||''}"
+              placeholder="0" id="qty-${p.id}" onchange="updateQty('${p.id}',this.value)" oninput="updateQty('${p.id}',this.value)"/></td>
+            <td><span class="unit-price" id="up-${p.id}">${qty>0?fmt(price):'—'}</span></td>
+            <td><span class="line-total" id="lt-${p.id}">${qty>0?fmt(total):'—'}</span></td>
+            <td><button class="add-btn${qty>0?' added':''}" id="addbtn-${p.id}" onclick="quickAdd('${p.id}')">${qty>0?'✓':'+'}</button></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+  updateCartBar();
+}
+
+function switchCat(cat){ activeCategory=cat; renderProducts(); }
+
+function updateQty(id, rawVal){
+  const qty = parseInt(rawVal)||0;
+  if(qty>0) cart[id]=qty; else delete cart[id];
+  const p = getProductById(id);
+  const price = getPrice(p,qty);
+  document.getElementById(`up-${id}`).textContent = qty>0?fmt(price):'—';
+  document.getElementById(`lt-${id}`).textContent = qty>0?fmt(qty*price):'—';
+  const btn = document.getElementById(`addbtn-${id}`);
+  btn.textContent = qty>0?'✓':'+';
+  btn.className = 'add-btn'+(qty>0?' added':'');
+  // update tier highlights
+  const tiersEl = document.querySelectorAll(`#row-${id} .tier`);
+  tiersEl.forEach((el,i)=>{ el.className='tier'+(qty>=p.tiers[i].min&&qty<=p.tiers[i].max?' active-tier':''); });
+  updateCartBar();
+}
+
+function quickAdd(id){
+  const inp = document.getElementById(`qty-${id}`);
+  if(!inp.value||parseInt(inp.value)===0){ inp.value=1; updateQty(id,1); }
+}
+
+function updateCartBar(){
+  const count = Object.keys(cart).length;
+  const total = Object.entries(cart).reduce((s,[id,q])=>{ const p=getProductById(id); return s+q*getPrice(p,q); },0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartBadge').textContent = count+' line'+(count!==1?'s':'');
+  document.getElementById('cartTotal').textContent = fmt(total);
+  document.getElementById('toStep3Btn').disabled = count===0;
+}
+
+// ── STEP NAV ──
+function setStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById(`step${i}`).style.display = i===n?'block':'none';
+    const s=document.getElementById(`s${i}`);
+    s.className='step'+(i===n?' active':i<n?' done':'');
+  });
+  [1,2].forEach(i=>{
+    document.getElementById(`line${i}`).className='step-line'+(i<n?' done':'');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep2(){
+  const fields=[{id:'firstName',label:'First name'},{id:'lastName',label:'Last name'},
+    {id:'organisation',label:'Organisation'},{id:'facilityType',label:'Facility type'},
+    {id:'email',label:'Email'},{id:'phone',label:'Phone'},{id:'country',label:'Country'}];
+  let ok=true;
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const err=document.getElementById('err-'+f.id);
+    if(!el.value.trim()){ el.classList.add('error'); err.textContent=f.label+' is required.'; ok=false; }
+    else if(f.id==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)){ el.classList.add('error'); err.textContent='Please enter a valid email.'; ok=false; }
+    else{ el.classList.remove('error'); err.textContent=''; }
+  });
+  if(!ok) return;
+  setStep(2); renderProducts();
+}
+
+function goStep1(){ setStep(1); }
+function goStep2Back(){ setStep(2); renderProducts(); }
+
+function goStep3(){
+  if(Object.keys(cart).length===0) return;
+  // Build review
+  const d={
+    name: document.getElementById('firstName').value+' '+document.getElementById('lastName').value,
+    org: document.getElementById('organisation').value,
+    type: document.getElementById('facilityType').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    country: document.getElementById('country').value,
+    delivery: document.getElementById('deliveryDate').value||'Flexible',
+    notes: document.getElementById('notes').value||'None',
+  };
+  const rDetails = document.getElementById('reviewDetails');
+  rDetails.innerHTML = [
+    {label:'Full Name',val:d.name},{label:'Organisation',val:d.org},
+    {label:'Facility Type',val:d.type},{label:'Email',val:d.email},
+    {label:'Phone',val:d.phone},{label:'Country',val:d.country},
+    {label:'Desired Delivery',val:d.delivery},{label:'Notes',val:d.notes},
+  ].map(f=>`<div class="review-field"><label>${f.label}</label><p>${f.val}</p></div>`).join('');
+
+  let subtotal=0;
+  const rows = Object.entries(cart).map(([id,qty])=>{
+    const p=getProductById(id); const pr=getPrice(p,qty); const tot=qty*pr; subtotal+=tot;
+    const cat = Object.entries(PRODUCTS).find(([c,ps])=>ps.find(x=>x.id===id))[0];
+    return `<tr><td><strong>${p.name}</strong></td><td class="hide-mobile">${cat}</td>
+      <td>${qty.toLocaleString()}</td><td>${fmt(pr)}</td><td><strong>${fmt(tot)}</strong></td></tr>`;
+  }).join('');
+  document.getElementById('reviewItems').innerHTML = rows;
+
+  // Totals
+  const listPrice = Object.entries(cart).reduce((s,[id,q])=>{ const p=getProductById(id); return s+q*p.tiers[0].price; },0);
+  const savings = listPrice-subtotal;
+  const savingsPct = listPrice>0?Math.round(savings/listPrice*100):0;
+  document.getElementById('totalsBox').innerHTML = `
+    <div class="totals-row"><span>List Price (Tier 1)</span><span class="totals-val">${fmt(listPrice)}</span></div>
+    ${savings>0?`<div class="totals-row" style="color:var(--success)"><span>Volume Discount <span class="discount-badge">-${savingsPct}%</span></span><span>-${fmt(savings)}</span></div>`:''}
+    <div class="totals-row grand"><span>Estimated Total</span><span class="totals-val">${fmt(subtotal)}</span></div>
+    <div style="font-size:12px;color:var(--text-light);margin-top:10px;">All prices in KES. Excludes shipping, taxes, and installation unless quoted separately.</div>`;
+
+  setStep(3);
+}
+
+// ── SUBMIT ──
+function submitQuote(){
+  const d={
+    name: document.getElementById('firstName').value+' '+document.getElementById('lastName').value,
+    org: document.getElementById('organisation').value,
+    type: document.getElementById('facilityType').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    country: document.getElementById('country').value,
+    delivery: document.getElementById('deliveryDate').value||'Flexible',
+    notes: document.getElementById('notes').value||'None',
+  };
+
+  let body = `MEDCORE SOLUTIONS — QUOTE REQUEST\n`;
+  body += `${'='.repeat(50)}\n\n`;
+  body += `CUSTOMER DETAILS\n${'-'.repeat(30)}\n`;
+  body += `Name:           ${d.name}\n`;
+  body += `Organisation:   ${d.org}\n`;
+  body += `Facility Type:  ${d.type}\n`;
+  body += `Email:          ${d.email}\n`;
+  body += `Phone:          ${d.phone}\n`;
+  body += `Country:        ${d.country}\n`;
+  body += `Delivery Date:  ${d.delivery}\n`;
+  body += `Notes:          ${d.notes}\n\n`;
+  body += `REQUESTED PRODUCTS\n${'-'.repeat(30)}\n`;
+
+  let subtotal=0;
+  Object.entries(cart).forEach(([id,qty])=>{
+    const p=getProductById(id); const pr=getPrice(p,qty); const tot=qty*pr; subtotal+=tot;
+    body += `• ${p.name} (${p.unit})\n`;
+    body += `  Qty: ${qty}  |  Unit Price: ${fmt(pr)}  |  Line Total: ${fmt(tot)}\n`;
+  });
+  body += `\n${'='.repeat(50)}\n`;
+  body += `ESTIMATED TOTAL: ${fmt(subtotal)}\n`;
+  body += `(Prices indicative — subject to final confirmation)\n\n`;
+  body += `Please respond within 24 business hours with a formal proposal.\n`;
+
+  const ref = 'MC-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  const subject = `Quote Request — ${d.org} [${ref}]`;
+  const mailto = `mailto:sales@medcoresolutions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+
+  // Show success
+  setTimeout(()=>{
+    document.getElementById('step3').style.display='none';
+    const stepper = document.getElementById('stepper');
+    stepper.style.display='none';
+    document.getElementById('successScreen').style.display='block';
+    document.getElementById('refNumber').textContent=ref;
+    window.scrollTo({top:0,behavior:'smooth'});
+  },800);
+}
+</script>
+
+<!-- WHATSAPP -->
+<style>
+.whatsapp-btn{position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);text-decoration:none;transition:transform 0.2s;}
+.whatsapp-btn:hover{transform:scale(1.1);}
+.whatsapp-btn svg{width:28px;height:28px;fill:white;}
+.whatsapp-tooltip{position:absolute;right:64px;background:#1a1a1a;color:white;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.whatsapp-btn:hover .whatsapp-tooltip{opacity:1;}
+</style>
+<a class="whatsapp-btn" href="https://wa.me/254700000000?text=Hello%20MedCore%20Solutions%2C%20I%20need%20help%20with%20my%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <span class="whatsapp-tooltip">Need help?</span>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>

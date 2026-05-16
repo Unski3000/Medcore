@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Contact MedCore Solutions — reach our sales team, technical support or visit us at Southern House, Murang'a Road, Nairobi, Kenya."/>
+<meta property="og:title" content="Contact Us — MedCore Solutions"/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E8C8C'/><text y='.9em' font-size='72' x='50%' dominant-baseline='auto' text-anchor='middle' font-family='serif' fill='white'>M</text></svg>"/>
+<title>Contact Us — MedCore Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0B1F3A;--navy-mid:#12305A;--teal:#0E8C8C;--teal-light:#14AAAA;
+  --gold:#C89B3C;--gold-light:#E5B84A;--white:#FAFCFF;--off-white:#EEF2F7;
+  --text-dark:#0B1F3A;--text-mid:#3B5070;--text-light:#7A92AC;
+  --border:rgba(11,31,58,0.12);--error:#D94F4F;--success:#1A9E6E;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-dark);}
+
+/* NAV */
+nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,155,60,0.2);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal),var(--teal-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:white;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:white;}
+.nav-logo-text span{color:var(--gold);}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center;}
+.nav-links a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:13.5px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold-light);}
+.nav-cta{background:var(--teal);color:white!important;padding:8px 18px;border-radius:6px;font-weight:600!important;}
+.nav-cta:hover{background:var(--teal-light)!important;}
+
+/* HERO BANNER */
+.hero-banner{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:56px 5vw 48px;position:relative;overflow:hidden;}
+.hero-banner::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(14,140,140,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(14,140,140,0.07) 1px,transparent 1px);background-size:48px 48px;}
+.hero-inner{position:relative;z-index:1;}
+.hero-tag{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--teal-light);margin-bottom:10px;}
+.hero-inner h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:600;color:white;margin-bottom:10px;}
+.hero-inner h1 em{font-style:normal;color:var(--gold);}
+.hero-inner p{font-size:15px;color:rgba(255,255,255,0.6);max-width:520px;line-height:1.75;font-weight:300;}
+
+/* MAIN LAYOUT */
+.page{max-width:1200px;margin:0 auto;padding:56px 5vw 80px;}
+.page-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:start;}
+
+/* CONTACT CARDS */
+.info-stack{display:flex;flex-direction:column;gap:20px;}
+.info-card{background:white;border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color 0.2s,box-shadow 0.2s;}
+.info-card:hover{border-color:var(--teal);box-shadow:0 8px 28px rgba(11,31,58,0.08);}
+.info-card-icon{width:44px;height:44px;border-radius:10px;background:rgba(14,140,140,0.1);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;}
+.info-card h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.info-card p,.info-card a{font-size:14px;color:var(--text-mid);line-height:1.7;font-weight:300;text-decoration:none;}
+.info-card a:hover{color:var(--teal);}
+.info-card .badge{display:inline-block;background:rgba(26,158,110,0.1);color:var(--success);border-radius:100px;padding:3px 10px;font-size:11px;font-weight:600;margin-top:8px;}
+
+/* HOURS TABLE */
+.hours-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.hours-table td{padding:5px 0;font-size:13.5px;color:var(--text-mid);}
+.hours-table td:last-child{text-align:right;font-weight:500;color:var(--text-dark);}
+.hours-table tr.today td{color:var(--teal);font-weight:600;}
+
+/* CONTACT FORM */
+.form-card{background:white;border:1px solid var(--border);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(11,31,58,0.06);}
+.form-card h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.form-card>p{font-size:14px;color:var(--text-mid);margin-bottom:28px;font-weight:300;line-height:1.6;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:13px;font-weight:600;color:var(--text-dark);letter-spacing:0.2px;}
+label span{color:var(--error);margin-left:2px;}
+input,select,textarea{padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-dark);background:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,140,140,0.1);}
+textarea{resize:vertical;min-height:120px;}
+.error-msg{font-size:12px;color:var(--error);margin-top:2px;}
+.btn-submit{background:linear-gradient(135deg,var(--teal),var(--teal-light));color:white;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(14,140,140,0.3);margin-top:8px;width:100%;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,140,140,0.4);}
+.form-success{display:none;text-align:center;padding:40px 20px;}
+.form-success-icon{font-size:48px;margin-bottom:16px;}
+.form-success h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.form-success p{font-size:14px;color:var(--text-mid);line-height:1.7;}
+
+/* MAP */
+.map-section{margin-top:48px;}
+.map-section h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.map-section p{font-size:14px;color:var(--text-mid);margin-bottom:20px;}
+.map-wrap{border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px rgba(11,31,58,0.07);}
+.map-wrap iframe{width:100%;height:380px;display:block;border:none;}
+
+/* FAQ */
+.faq-section{margin-top:56px;}
+.faq-section h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--navy);margin-bottom:32px;}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.faq-item{background:white;border:1px solid var(--border);border-radius:12px;padding:24px;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+.faq-item:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(11,31,58,0.07);}
+.faq-q{font-size:15px;font-weight:600;color:var(--navy);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q::after{content:'+';font-size:20px;color:var(--teal);flex-shrink:0;transition:transform 0.3s;}
+.faq-item.open .faq-q::after{transform:rotate(45deg);}
+.faq-a{font-size:14px;color:var(--text-mid);line-height:1.7;margin-top:12px;display:none;font-weight:300;}
+.faq-item.open .faq-a{display:block;}
+
+/* WHATSAPP */
+.whatsapp-btn{position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);text-decoration:none;transition:transform 0.2s;}
+.whatsapp-btn:hover{transform:scale(1.1);}
+.whatsapp-btn svg{width:28px;height:28px;fill:white;}
+.whatsapp-tooltip{position:absolute;right:64px;background:#1a1a1a;color:white;font-size:12px;padding:6px 12px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.whatsapp-btn:hover .whatsapp-tooltip{opacity:1;}
+
+/* FOOTER */
+footer{background:#060F1E;padding:32px 5vw;text-align:center;}
+footer p{font-size:13px;color:rgba(255,255,255,0.35);}
+footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin:0 10px;}
+footer a:hover{color:var(--teal-light);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .page-grid{grid-template-columns:1fr;gap:32px;}
+  .faq-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+@media(max-width:560px){
+  nav{padding:0 16px;height:60px;}
+  .nav-logo-text{font-size:16px;}
+  .hero-banner{padding:36px 16px 32px;}
+  .page{padding:32px 16px 64px;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .form-card{padding:24px 18px;}
+  .map-wrap iframe{height:260px;}
+  input,select,textarea{font-size:15px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="medcore-landing.html">
+    <div class="nav-logo-mark">M</div>
+    <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="medcore-landing.html">Home</a></li>
+    <li><a href="medcore-products.html">Products</a></li>
+    <li><a href="medcore-quote.html" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<div class="hero-banner">
+  <div class="hero-inner">
+    <div class="hero-tag">Get in Touch</div>
+    <h1>Contact <em>MedCore</em> Solutions</h1>
+    <p>Our team is ready to help you find the right equipment, answer technical questions, or build a customised procurement plan for your facility.</p>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-grid">
+
+    <!-- LEFT: CONTACT INFO -->
+    <div class="info-stack">
+
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <h3>Visit Us</h3>
+        <p>Southern House, Murang'a Road<br/>Opposite Meridian Hotel<br/>Nairobi, Kenya<br/>P.O. Box 2363 – 00200</p>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">📞</div>
+        <h3>Call or WhatsApp</h3>
+        <p><a href="tel:+254700000000">+254 700 000 000</a></p>
+        <p><a href="tel:+254711000000">+254 711 000 000</a></p>
+        <a href="https://wa.me/254700000000" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:#25D366;font-weight:600;font-size:13px;margin-top:10px;text-decoration:none;">
+          💬 Chat on WhatsApp
+        </a>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">✉️</div>
+        <h3>Email Us</h3>
+        <p><a href="mailto:info@medcoresolutions.com">info@medcoresolutions.com</a></p>
+        <p><a href="mailto:sales@medcoresolutions.com">sales@medcoresolutions.com</a></p>
+        <p style="margin-top:8px;font-size:12px;color:var(--text-light);">We respond within 24 business hours.</p>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">🕐</div>
+        <h3>Business Hours</h3>
+        <table class="hours-table">
+          <tr id="row-mon"><td>Monday</td><td>8:00 AM – 5:30 PM</td></tr>
+          <tr id="row-tue"><td>Tuesday</td><td>8:00 AM – 5:30 PM</td></tr>
+          <tr id="row-wed"><td>Wednesday</td><td>8:00 AM – 5:30 PM</td></tr>
+          <tr id="row-thu"><td>Thursday</td><td>8:00 AM – 5:30 PM</td></tr>
+          <tr id="row-fri"><td>Friday</td><td>8:00 AM – 5:00 PM</td></tr>
+          <tr id="row-sat"><td>Saturday</td><td>9:00 AM – 1:00 PM</td></tr>
+          <tr id="row-sun"><td>Sunday</td><td>Closed</td></tr>
+        </table>
+        <span class="badge" id="openStatus">Checking hours…</span>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon">🚚</div>
+        <h3>Delivery & Logistics</h3>
+        <p>We deliver nationwide across Kenya. International shipping available to East Africa, Southern Africa and beyond. All orders are tracked and insured.</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: CONTACT FORM -->
+    <div class="form-card">
+      <h2>Send Us a Message</h2>
+      <p>Fill in the form and our team will get back to you within one business day. For urgent enquiries, call or WhatsApp us directly.</p>
+
+      <div id="contactForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name <span>*</span></label>
+            <input type="text" id="cfFirst" placeholder="e.g. John"/>
+            <div class="error-msg" id="e-cfFirst"></div>
+          </div>
+          <div class="form-group">
+            <label>Last Name <span>*</span></label>
+            <input type="text" id="cfLast" placeholder="e.g. Smith"/>
+            <div class="error-msg" id="e-cfLast"></div>
+          </div>
+          <div class="form-group">
+            <label>Email Address <span>*</span></label>
+            <input type="email" id="cfEmail" placeholder="you@organisation.com"/>
+            <div class="error-msg" id="e-cfEmail"></div>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="cfPhone" placeholder="+254 700 000 000"/>
+          </div>
+          <div class="form-group full">
+            <label>Organisation / Facility</label>
+            <input type="text" id="cfOrg" placeholder="e.g. Nairobi General Hospital"/>
+          </div>
+          <div class="form-group full">
+            <label>Subject <span>*</span></label>
+            <select id="cfSubject">
+              <option value="">Select a subject…</option>
+              <option>Product Enquiry</option>
+              <option>Request a Quote</option>
+              <option>Technical Support</option>
+              <option>Delivery & Logistics</option>
+              <option>After-Sales Support</option>
+              <option>Partnership / Distributorship</option>
+              <option>Careers</option>
+              <option>Other</option>
+            </select>
+            <div class="error-msg" id="e-cfSubject"></div>
+          </div>
+          <div class="form-group full">
+            <label>Message <span>*</span></label>
+            <textarea id="cfMessage" placeholder="Tell us how we can help you…"></textarea>
+            <div class="error-msg" id="e-cfMessage"></div>
+          </div>
+        </div>
+        <button class="btn-submit" onclick="submitContact()">Send Message →</button>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✅</div>
+        <h3>Message Sent!</h3>
+        <p>Thank you for reaching out. Our team will respond to <strong id="fsEmail"></strong> within one business day.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <h2>Find Us</h2>
+    <p>Southern House, Murang'a Road, opposite Meridian Hotel — Nairobi, Kenya.</p>
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.819588609789!2d36.82316!3d-1.2833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d7d5f5a5a5%3A0x0!2sMurang'a%20Road%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1700000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="MedCore Solutions location on Google Maps">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you have a minimum order quantity?</div>
+        <div class="faq-a">No. We supply to facilities of all sizes — from solo practitioners ordering a single item to large hospital groups placing bulk orders. There is no minimum order requirement.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How long does delivery take?</div>
+        <div class="faq-a">In-stock items are dispatched within 48 hours. Delivery across Nairobi is typically 1–2 business days. Upcountry Kenya takes 2–4 business days. International orders vary by destination.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Are all products certified and approved?</div>
+        <div class="faq-a">Yes. All products in our catalogue meet ISO 13485, CE Mark, and relevant FDA standards. We provide full regulatory documentation including conformity declarations upon request.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you offer after-sales technical support?</div>
+        <div class="faq-a">Yes. Our biomedical engineering team provides installation, staff training, calibration and ongoing maintenance support for all major equipment purchases — both on-site and remotely.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I get a formal invoice or LPO?</div>
+        <div class="faq-a">Yes. We issue formal proforma invoices, LPOs and VAT receipts for all transactions. We are fully registered with KRA and can supply ETR receipts.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What payment methods do you accept?</div>
+        <div class="faq-a">We accept bank transfers (Co-operative Bank, Kimathi Branch, A/C: 01192846332200), M-Pesa Till No. 9255495, and cheques payable to MedCore Solutions. Flexible credit terms available for regular clients.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you offer discounts for bulk purchases?</div>
+        <div class="faq-a">Yes. We offer tiered volume pricing on all product lines. The more you order, the lower the unit price. Contact our sales team for a custom volume pricing proposal.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I become a distributor or reseller?</div>
+        <div class="faq-a">Yes, we welcome partnerships with distributors, resellers and healthcare procurement companies. Please contact us with your business details and we will share our partnership programme information.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="medcore-landing.html">Home</a>
+    <a href="medcore-products.html">Products</a>
+    <a href="medcore-quote.html">Get a Quote</a>
+    <a href="medcore-contact.html">Contact</a>
+  </p>
+  <p style="margin-top:12px;">© 2026 MedCore Solutions. All rights reserved. · Southern House, Murang'a Road, Nairobi, Kenya.</p>
+</footer>
+
+<!-- WHATSAPP -->
+<a class="whatsapp-btn" href="https://wa.me/254700000000?text=Hello%20MedCore%20Solutions%2C%20I%20would%20like%20to%20get%20in%20touch." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <span class="whatsapp-tooltip">Chat with us</span>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// Highlight today's hours
+const days=['sun','mon','tue','wed','thu','fri','sat'];
+const today=days[new Date().getDay()];
+const todayRow=document.getElementById('row-'+today);
+if(todayRow) todayRow.classList.add('today');
+
+// Open/closed status
+const now=new Date();
+const day=now.getDay(); const h=now.getHours(); const m=now.getMinutes();
+const mins=h*60+m;
+let isOpen=false;
+if(day>=1&&day<=4) isOpen=mins>=480&&mins<1050; // Mon–Thu 8–5:30
+else if(day===5) isOpen=mins>=480&&mins<1020;   // Fri 8–5
+else if(day===6) isOpen=mins>=540&&mins<780;    // Sat 9–1
+const statusEl=document.getElementById('openStatus');
+statusEl.textContent=isOpen?'Open Now':'Closed Now';
+statusEl.style.background=isOpen?'rgba(26,158,110,0.1)':'rgba(217,79,79,0.1)';
+statusEl.style.color=isOpen?'#1A9E6E':'#D94F4F';
+
+// FAQ toggle
+function toggleFaq(el){ el.classList.toggle('open'); }
+
+// Contact form submit
+function submitContact(){
+  const fields=[
+    {id:'cfFirst',label:'First name'},
+    {id:'cfLast',label:'Last name'},
+    {id:'cfEmail',label:'Email',type:'email'},
+    {id:'cfSubject',label:'Subject'},
+    {id:'cfMessage',label:'Message'},
+  ];
+  let ok=true;
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const err=document.getElementById('e-'+f.id);
+    if(!el||!err) return;
+    if(!el.value.trim()){ el.style.borderColor='var(--error)'; err.textContent=f.label+' is required.'; ok=false; }
+    else if(f.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value)){ el.style.borderColor='var(--error)'; err.textContent='Please enter a valid email.'; ok=false; }
+    else{ el.style.borderColor=''; err.textContent=''; }
+  });
+  if(!ok) return;
+
+  const email=document.getElementById('cfEmail').value;
+  const first=document.getElementById('cfFirst').value;
+  const last=document.getElementById('cfLast').value;
+  const org=document.getElementById('cfOrg').value;
+  const subj=document.getElementById('cfSubject').value;
+  const msg=document.getElementById('cfMessage').value;
+  const phone=document.getElementById('cfPhone').value;
+
+  const body=`Name: ${first} ${last}\nOrganisation: ${org||'N/A'}\nPhone: ${phone||'N/A'}\nSubject: ${subj}\n\nMessage:\n${msg}`;
+  const mailto=`mailto:info@medcoresolutions.com?subject=${encodeURIComponent('Website Enquiry: '+subj+' – '+first+' '+last)}&body=${encodeURIComponent(body)}`;
+  window.location.href=mailto;
+
+  setTimeout(()=>{
+    document.getElementById('contactForm').style.display='none';
+    const fs=document.getElementById('formSuccess');
+    fs.style.display='block';
+    document.getElementById('fsEmail').textContent=email;
+  },600);
+}
+</script>
+</body>
+</html>

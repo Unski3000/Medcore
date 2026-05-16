@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="MedCore Solutions — Your trusted supplier of certified medical equipment, surgical instruments, laboratory devices and consumables for hospitals, clinics and healthcare providers."/>
+<meta property="og:title" content="MedCore Solutions — Precision Medical Equipment"/>
+<meta property="og:description" content="Certified medical equipment and consumables for hospitals, clinics and healthcare enterprises of every size."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E8C8C'/><text y='.9em' font-size='72' x='50%' dominant-baseline='auto' text-anchor='middle' font-family='serif' fill='white'>M</text></svg>"/>
+<title>MedCore Solutions — Precision Medical Equipment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --navy-mid: #12305A;
+    --teal: #0E8C8C;
+    --teal-light: #14AAAA;
+    --gold: #C89B3C;
+    --gold-light: #E5B84A;
+    --white: #FAFCFF;
+    --off-white: #EEF2F7;
+    --text-dark: #0B1F3A;
+    --text-mid: #3B5070;
+    --text-light: #7A92AC;
+    --border: rgba(11,31,58,0.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 72px;
+    background: rgba(11,31,58,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,155,60,0.2);
+  }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; background: none; border: none; cursor: pointer;
+    padding: 6px; z-index: 200;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: white; border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2){ opacity: 0; }
+  .hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE MENU DRAWER ── */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 150;
+    background: var(--navy);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: all; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 600; color: white;
+    text-decoration: none; letter-spacing: 0.5px;
+    padding: 10px 24px; border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu .mob-cta {
+    background: var(--teal); color: white !important;
+    font-size: 18px; font-family: 'DM Sans', sans-serif;
+    font-weight: 600; margin-top: 16px; padding: 14px 36px;
+    border-radius: 8px;
+  }
+  .mobile-menu .mob-cta:hover { background: var(--teal-light) !important; }
+  .mobile-menu-divider {
+    width: 40px; height: 1px; background: rgba(255,255,255,0.15); margin: 8px 0;
+  }
+
+  /* ── WHATSAPP BUTTON ── */
+  .whatsapp-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #25D366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+    text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(37,211,102,0.55); }
+  .whatsapp-btn svg { width: 28px; height: 28px; fill: white; }
+  .whatsapp-tooltip {
+    position: absolute; right: 64px; background: #1a1a1a;
+    color: white; font-size: 12px; font-weight: 500;
+    padding: 6px 12px; border-radius: 6px; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .whatsapp-btn:hover .whatsapp-tooltip { opacity: 1; }
+
+  /* ── BACK TO TOP ── */
+  .back-to-top {
+    position: fixed; bottom: 92px; right: 24px; z-index: 998;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: white; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 2px 12px rgba(11,31,58,0.12);
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.3s, transform 0.3s, box-shadow 0.2s;
+    font-size: 18px;
+  }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover { box-shadow: 0 6px 20px rgba(11,31,58,0.18); }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 700; color: white;
+    letter-spacing: -1px;
+  }
+  .nav-logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 600; color: white;
+    letter-spacing: 0.5px;
+  }
+  .nav-logo-text span { color: var(--gold); }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 13.5px; font-weight: 500; letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta {
+    background: var(--teal);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--teal-light) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+    padding: 120px 5vw 80px;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(14,140,140,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,140,140,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.6;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(14,140,140,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -300px; left: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,155,60,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+    animation: fadeUp 0.9s ease both;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(14,140,140,0.15);
+    border: 1px solid rgba(14,140,140,0.35);
+    color: var(--teal-light);
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 28px;
+  }
+  .hero-badge::before { content: '●'; font-size: 8px; }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 6vw, 76px);
+    font-weight: 600;
+    color: white;
+    line-height: 1.08;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero p {
+    font-size: 17px; font-weight: 300; line-height: 1.75;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin-bottom: 44px;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    color: white;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 15px; font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(14,140,140,0.35);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(14,140,140,0.45); }
+  .btn-outline {
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 15px; font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(200,155,60,0.08); color: var(--gold-light); }
+
+  .hero-stats {
+    position: relative; z-index: 2;
+    display: flex; gap: 48px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+  .hero-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 700; color: white;
+    line-height: 1;
+  }
+  .hero-stat-num span { color: var(--gold); }
+  .hero-stat-label {
+    font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .hero-right {
+    position: absolute; right: 5vw; top: 50%; transform: translateY(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column; gap: 16px;
+    animation: fadeLeft 0.9s 0.3s ease both;
+  }
+  .hero-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px 24px;
+    width: 240px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .hero-card:hover { border-color: rgba(14,140,140,0.4); background: rgba(14,140,140,0.08); }
+  .hero-card-icon {
+    font-size: 24px; margin-bottom: 10px;
+  }
+  .hero-card h4 {
+    font-size: 14px; font-weight: 600; color: white; margin-bottom: 4px;
+  }
+  .hero-card p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  /* ── CLIENTS ── */
+  .clients {
+    background: var(--off-white);
+    padding: 32px 5vw;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .clients-inner {
+    display: flex; align-items: center; gap: 40px; overflow: hidden;
+  }
+  .clients-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-light); white-space: nowrap; flex-shrink: 0;
+  }
+  .clients-logos {
+    display: flex; gap: 48px; align-items: center;
+    animation: scrollX 30s linear infinite;
+    white-space: nowrap;
+  }
+  .client-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 600; color: var(--text-light);
+    letter-spacing: 0.5px; opacity: 0.6; transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .client-logo:hover { opacity: 1; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 100px 5vw; }
+  .section-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 600; color: var(--navy);
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--text-mid); line-height: 1.75;
+    max-width: 560px; font-weight: 300;
+  }
+  .section-header { margin-bottom: 60px; }
+
+  /* ── ABOUT ── */
+  .about { background: white; }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-placeholder {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: 16px;
+    height: 480px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .about-img-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    width: 100%; height: 100%;
+  }
+  .about-img-cell {
+    background: rgba(14,140,140,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    transition: background 0.3s;
+  }
+  .about-img-cell:hover { background: rgba(14,140,140,0.2); }
+  .about-img-overlay {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    background: rgba(11,31,58,0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 10px; padding: 16px 20px;
+    border: 1px solid rgba(200,155,60,0.25);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .about-img-overlay-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--teal-light);
+    box-shadow: 0 0 0 4px rgba(14,140,140,0.2);
+    flex-shrink: 0;
+  }
+  .about-img-overlay-text { font-size: 13px; color: white; font-weight: 500; }
+  .about-img-overlay-text span { color: var(--gold); }
+  .about-features { display: flex; flex-direction: column; gap: 28px; margin-top: 32px; }
+  .about-feat {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .about-feat-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(14,140,140,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .about-feat:hover .about-feat-icon { background: rgba(14,140,140,0.2); }
+  .about-feat h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .about-feat p { font-size: 14px; color: var(--text-mid); line-height: 1.6; font-weight: 300; }
+
+  /* ── PRODUCTS ── */
+  .products { background: var(--off-white); }
+  .products-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+  }
+  .product-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(11,31,58,0.12);
+    border-color: var(--teal);
+  }
+  .product-card-visual {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px;
+    position: relative; overflow: hidden;
+  }
+  .product-card-visual::after {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.3s;
+    background: rgba(14,140,140,0.08);
+  }
+  .product-card:hover .product-card-visual::after { opacity: 1; }
+  .pc-blue   { background: linear-gradient(135deg, #E8F4F8, #C8E8F2); }
+  .pc-navy   { background: linear-gradient(135deg, #E8EDF5, #C8D5E8); }
+  .pc-teal   { background: linear-gradient(135deg, #E5F5F5, #BFE8E8); }
+  .pc-gold   { background: linear-gradient(135deg, #FBF5E8, #F0DFB5); }
+  .product-card-body { padding: 24px; }
+  .product-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 8px;
+  }
+  .product-card-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 8px;
+  }
+  .product-card-body p { font-size: 14px; color: var(--text-mid); line-height: 1.65; font-weight: 300; margin-bottom: 20px; }
+  .product-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--teal);
+    text-decoration: none; transition: gap 0.2s;
+  }
+  .product-link:hover { gap: 10px; }
+
+  /* ── WHY US ── */
+  .why { background: var(--navy); }
+  .why .section-title { color: white; }
+  .why .section-sub { color: rgba(255,255,255,0.55); }
+  .why .section-tag { color: var(--gold); }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .why-item {
+    padding: 40px 36px;
+    background: rgba(11,31,58,0.6);
+    transition: background 0.25s;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .why-item:last-child { border-right: none; }
+  .why-item:hover { background: rgba(14,140,140,0.12); }
+  .why-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; font-weight: 700;
+    color: rgba(14,140,140,0.25); line-height: 1;
+    margin-bottom: 16px;
+  }
+  .why-item h4 {
+    font-size: 16px; font-weight: 600; color: white; margin-bottom: 10px;
+  }
+  .why-item p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; font-weight: 300; }
+  .why-bottom {
+    margin-top: 48px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .why-cert {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 100px; padding: 10px 20px;
+    font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 500;
+  }
+  .why-cert-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: white; }
+  .test-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .test-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 32px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .test-card:hover { border-color: var(--teal); box-shadow: 0 8px 32px rgba(11,31,58,0.08); }
+  .test-stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+  .test-card blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; color: var(--navy);
+    line-height: 1.65; font-weight: 400; font-style: italic;
+    margin-bottom: 24px;
+  }
+  .test-author { display: flex; align-items: center; gap: 12px; }
+  .test-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700;
+    font-family: 'Cormorant Garamond', serif;
+    color: white; flex-shrink: 0;
+  }
+  .av-a { background: linear-gradient(135deg, var(--teal), var(--teal-light)); }
+  .av-b { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+  .av-c { background: linear-gradient(135deg, #6B5EA8, #9B8DD4); }
+  .test-author h5 { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .test-author p { font-size: 12px; color: var(--text-light); }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--navy) 0%, #0A2E50 100%);
+    padding: 100px 5vw;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .cta-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(14,140,140,0.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 600; color: white; line-height: 1.2;
+    margin-bottom: 16px; position: relative;
+  }
+  .cta-section h2 em { font-style: normal; color: var(--gold); }
+  .cta-section p {
+    font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 40px;
+    max-width: 520px; margin-left: auto; margin-right: auto;
+    font-weight: 300; line-height: 1.7; position: relative;
+  }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060F1E;
+    padding: 60px 5vw 32px;
+    color: rgba(255,255,255,0.5);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand p {
+    font-size: 14px; line-height: 1.75; color: rgba(255,255,255,0.4);
+    margin-top: 14px; max-width: 280px; font-weight: 300;
+  }
+  .footer-col h4 {
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a {
+    font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--teal-light); }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 13px;
+  }
+  .footer-bottom-links { display: flex; gap: 24px; }
+  .footer-bottom-links a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+  .footer-bottom-links a:hover { color: rgba(255,255,255,0.6); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translate(30px, -50%); }
+    to   { opacity: 1; transform: translate(0, -50%); }
+  }
+  @keyframes scrollX {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+
+  /* Tablet (≤900px) */
+  @media (max-width: 900px) {
+    .hero-right { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .why-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .test-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .nav-links { display: none; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Mobile (≤640px) */
+  @media (max-width: 640px) {
+    /* Nav */
+    nav { height: 60px; padding: 0 16px; }
+    .nav-logo-text { font-size: 16px; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+
+    /* Hero */
+    .hero { padding: 100px 16px 56px; min-height: unset; }
+    .hero h1 { font-size: 36px; }
+    .hero p { font-size: 15px; }
+    .hero-actions { flex-direction: column; gap: 12px; }
+    .btn-primary, .btn-outline { width: 100%; justify-content: center; padding: 14px 20px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; margin-top: 48px; }
+    .hero-stat-num { font-size: 28px; }
+
+    /* Clients ticker */
+    .clients { padding: 20px 16px; }
+    .clients-label { display: none; }
+
+    /* Sections */
+    section { padding: 64px 16px; }
+    .section-header { margin-bottom: 40px; }
+    .section-sub { font-size: 14.5px; }
+
+    /* About */
+    .about-img-placeholder { height: 280px; }
+    .about-features { gap: 20px; }
+
+    /* Products grid */
+    .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .product-card-visual { height: 140px; font-size: 40px; }
+    .product-card-body { padding: 16px; }
+    .product-card-body h3 { font-size: 17px; }
+    .product-card-body p { font-size: 13px; }
+
+    /* Why grid */
+    .why-grid { gap: 0; }
+    .why-item { padding: 28px 20px; }
+    .why-num { font-size: 38px; }
+    .why-bottom { gap: 10px; }
+    .why-cert { font-size: 12px; padding: 8px 14px; }
+
+    /* Testimonials */
+    .test-card { padding: 24px; }
+
+    /* CTA */
+    .cta-section { padding: 64px 16px; }
+    .cta-actions { flex-direction: column; gap: 12px; align-items: stretch; }
+    .cta-actions .btn-primary,
+    .cta-actions .btn-outline { width: 100%; justify-content: center; }
+
+    /* Footer */
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 48px 16px 24px; }
+    .footer-bottom-links { gap: 16px; }
+  }
+
+  /* Small phones (≤380px) */
+  @media (max-width: 380px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">M</div>
+    <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="medcore-products.html">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#testimonials">Clients</a></li>
+    <li><a href="medcore-contact.html">Contact</a></li>
+    <li><a href="medcore-quote.html" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="medcore-products.html" onclick="closeMenu()">Products</a>
+  <a href="#why" onclick="closeMenu()">Why Us</a>
+  <a href="#testimonials" onclick="closeMenu()">Clients</a>
+  <a href="medcore-contact.html" onclick="closeMenu()">Contact</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="medcore-quote.html" class="mob-cta" onclick="closeMenu()">Get a Quote →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div>
+    <div class="hero-content">
+      <div class="hero-badge">ISO 13485 Certified Medical Supplier</div>
+      <h1>Precision Equipment.<br/>Trusted <em>Healthcare</em><br/>Partnerships.</h1>
+      <p>From critical diagnostic devices to everyday consumables — MedCore Solutions delivers certified medical equipment and reliable supply chain solutions to hospitals, clinics, and healthcare enterprises of every size.</p>
+      <div class="hero-actions">
+        <a href="medcore-products.html" class="btn-primary">Explore Products →</a>
+        <a href="medcore-quote.html" class="btn-outline">Request a Quote</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">500<span>+</span></div>
+        <div class="hero-stat-label">Product Lines</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">15<span>+</span></div>
+        <div class="hero-stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">1,200<span>+</span></div>
+        <div class="hero-stat-label">Healthcare Clients</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">40<span>+</span></div>
+        <div class="hero-stat-label">Countries Served</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-icon">🏥</div>
+      <h4>Large Hospital Systems</h4>
+      <p>End-to-end supply chain & bulk procurement solutions.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-icon">🏢</div>
+      <h4>SME Clinics</h4>
+      <p>Flexible ordering, fast delivery & technical support.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-icon">🩺</div>
+      <h4>Solo Practitioners</h4>
+      <p>No minimum orders. Affordable, certified equipment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS TICKER -->
+<div class="clients">
+  <div class="clients-inner">
+    <span class="clients-label">Trusted by</span>
+    <div class="clients-logos">
+      <span class="client-logo">Metro General Hospital</span>
+      <span class="client-logo">Wellspring Diagnostics</span>
+      <span class="client-logo">ClearPath Medical</span>
+      <span class="client-logo">Pinnacle Health Group</span>
+      <span class="client-logo">BlueShield Clinics</span>
+      <span class="client-logo">MediFirst Network</span>
+      <span class="client-logo">Apex Healthcare</span>
+      <!-- duplicate for seamless scroll -->
+      <span class="client-logo">Metro General Hospital</span>
+      <span class="client-logo">Wellspring Diagnostics</span>
+      <span class="client-logo">ClearPath Medical</span>
+      <span class="client-logo">Pinnacle Health Group</span>
+      <span class="client-logo">BlueShield Clinics</span>
+      <span class="client-logo">MediFirst Network</span>
+      <span class="client-logo">Apex Healthcare</span>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-img-placeholder">
+        <div class="about-img-inner">
+          <div class="about-img-cell">🔬</div>
+          <div class="about-img-cell">💉</div>
+          <div class="about-img-cell">🩻</div>
+          <div class="about-img-cell">❤️‍🩹</div>
+        </div>
+        <div class="about-img-overlay">
+          <div class="about-img-overlay-dot"></div>
+          <div class="about-img-overlay-text">All products are <span>CE & FDA registered</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-header">
+        <div class="section-tag">About MedCore Solutions</div>
+        <h2 class="section-title">Supplying Healthcare with Confidence Since 2009</h2>
+        <p class="section-sub">We bridge the gap between world-class medical manufacturers and healthcare providers — ensuring every facility, regardless of size, has access to safe, certified, and affordable medical equipment.</p>
+      </div>
+      <div class="about-features">
+        <div class="about-feat">
+          <div class="about-feat-icon">🌍</div>
+          <div>
+            <h4>Global Supply Network</h4>
+            <p>Partnerships with over 80 certified manufacturers across Europe, Asia, and the Americas — ensuring product availability and competitive pricing.</p>
+          </div>
+        </div>
+        <div class="about-feat">
+          <div class="about-feat-icon">📋</div>
+          <div>
+            <h4>Full Regulatory Compliance</h4>
+            <p>Every product in our catalog meets ISO 13485, CE, and FDA standards. Our in-house compliance team handles all documentation.</p>
+          </div>
+        </div>
+        <div class="about-feat">
+          <div class="about-feat-icon">🤝</div>
+          <div>
+            <h4>Dedicated Account Management</h4>
+            <p>From MSMEs to large hospital groups, every client receives a dedicated account manager and technical support team.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-header reveal">
+    <div class="section-tag">Our Product Range</div>
+    <h2 class="section-title">Equipment for Every Clinical Need</h2>
+    <p class="section-sub">From ICU-grade devices to everyday consumables, our catalog spans the full spectrum of modern healthcare requirements.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-card-visual pc-navy">🩻</div>
+      <div class="product-card-body">
+        <div class="product-tag">Devices · Large</div>
+        <h3>Large Medical Devices</h3>
+        <p>MRI systems, CT scanners, digital X-ray, surgical tables, ICU ventilators, and advanced patient monitoring systems.</p>
+        <a href="medcore-products.html" class="product-link">Browse Category →</a>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-card-visual pc-blue">🔬</div>
+      <div class="product-card-body">
+        <div class="product-tag">Devices · Medium</div>
+        <h3>Medium Medical Devices</h3>
+        <p>Ultrasound machines, infusion pumps, defibrillators, ECG systems, hematology analyzers, and surgical lights.</p>
+        <a href="medcore-products.html" class="product-link">Browse Category →</a>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-card-visual pc-teal">💊</div>
+      <div class="product-card-body">
+        <div class="product-tag">Devices · Small</div>
+        <h3>Small Medical Devices</h3>
+        <p>Pulse oximeters, blood glucose meters, nebulizers, otoscopes, thermometers, and handheld diagnostic tools.</p>
+        <a href="medcore-products.html" class="product-link">Browse Category →</a>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-card-visual pc-gold">🧤</div>
+      <div class="product-card-body">
+        <div class="product-tag">Consumables</div>
+        <h3>Medical Consumables</h3>
+        <p>Gloves, syringes, IV sets, surgical drapes, wound care, diagnostic test kits, and lab reagents — in bulk or per-order.</p>
+        <a href="medcore-products.html" class="product-link">Browse Category →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="section-header reveal">
+    <div class="section-tag">Why Choose MedCore</div>
+    <h2 class="section-title">The Standard Every Healthcare<br/>Provider Deserves</h2>
+    <p class="section-sub">We hold ourselves to the highest standards — so your patients receive the best care possible.</p>
+  </div>
+  <div class="why-grid reveal">
+    <div class="why-item">
+      <div class="why-num">01</div>
+      <h4>Certified Quality Assurance</h4>
+      <p>Every product undergoes multi-stage QA before reaching your facility. We maintain ISO 13485 certification and partner only with approved manufacturers.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">02</div>
+      <h4>Fast & Reliable Delivery</h4>
+      <p>With regional warehouses across three continents, we guarantee 48-hour dispatch for in-stock items and tracked shipment at every stage.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">03</div>
+      <h4>Scalable for Any Size</h4>
+      <p>Whether you're a solo practitioner or a 500-bed hospital, our flexible procurement model adapts to your volume, budget, and timeline.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">04</div>
+      <h4>After-Sales & Technical Support</h4>
+      <p>Our biomedical engineers provide installation, training, and ongoing maintenance support — locally and remotely.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">05</div>
+      <h4>Competitive & Transparent Pricing</h4>
+      <p>No hidden costs. Volume discounts available for SMEs and MSMEs. Flexible payment terms for long-term partners.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-num">06</div>
+      <h4>Regulatory Documentation</h4>
+      <p>We handle CE declarations, FDA registration letters, and all import/export documentation so you can focus on patient care.</p>
+    </div>
+  </div>
+  <div class="why-bottom reveal">
+    <div class="why-cert"><div class="why-cert-dot"></div>ISO 13485 Certified</div>
+    <div class="why-cert"><div class="why-cert-dot"></div>CE Mark Compliant</div>
+    <div class="why-cert"><div class="why-cert-dot"></div>FDA Registered Supplier</div>
+    <div class="why-cert"><div class="why-cert-dot"></div>WHO GMP Standards</div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header reveal">
+    <div class="section-tag">Client Testimonials</div>
+    <h2 class="section-title">Trusted Across the Healthcare Spectrum</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <blockquote>"MedCore has transformed our procurement process. Reliable lead times, competitive pricing, and the documentation support is second to none."</blockquote>
+      <div class="test-author">
+        <div class="test-avatar av-a">DK</div>
+        <div>
+          <h5>Dr. Daniel K.</h5>
+          <p>Chief of Procurement · Metro General Hospital</p>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <blockquote>"As a small clinic, we were worried about minimum orders and premium pricing. MedCore made it easy to access the same quality as the big hospitals."</blockquote>
+      <div class="test-author">
+        <div class="test-avatar av-b">SA</div>
+        <div>
+          <h5>Sarah A.</h5>
+          <p>Operations Manager · Wellness First Clinic</p>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <blockquote>"Their after-sales support is exceptional. When our imaging equipment needed recalibration, their team was on-site within 24 hours. Impressive."</blockquote>
+      <div class="test-author">
+        <div class="test-avatar av-c">RP</div>
+        <div>
+          <h5>Robert P.</h5>
+          <p>Biomedical Director · Pinnacle Health Group</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <h2>Ready to Equip Your<br/><em>Healthcare Facility?</em></h2>
+  <p>Talk to our team today — get a tailored product list, pricing, and delivery timeline designed specifically for your organization's needs.</p>
+  <div class="cta-actions">
+    <a href="medcore-quote.html" class="btn-primary">Request a Quote →</a>
+    <a href="tel:+1800000000" class="btn-outline">📞 Call Us Now</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#" style="text-decoration:none;">
+        <div class="nav-logo-mark">M</div>
+        <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
+      </a>
+      <p>Supplying certified medical equipment and consumables to healthcare providers worldwide since 2009.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="medcore-products.html">All Products</a></li>
+        <li><a href="medcore-products.html">Surgical Instruments</a></li>
+        <li><a href="medcore-products.html">Laboratory</a></li>
+        <li><a href="medcore-products.html">Physiotherapy</a></li>
+        <li><a href="medcore-products.html">View Full Catalogue</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Certifications</a></li>
+        <li><a href="medcore-contact.html">Partnerships</a></li>
+        <li><a href="medcore-contact.html">Careers</a></li>
+        <li><a href="medcore-contact.html">News</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="medcore-quote.html">Request a Quote</a></li>
+        <li><a href="medcore-contact.html">Contact Sales</a></li>
+        <li><a href="medcore-contact.html">Technical Support</a></li>
+        <li><a href="medcore-contact.html">Order Tracking</a></li>
+        <li><a href="medcore-contact.html">FAQs</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 MedCore Solutions. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="medcore-contact.html">Privacy Policy</a>
+      <a href="medcore-contact.html">Terms of Use</a>
+      <a href="medcore-contact.html">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a class="whatsapp-btn" href="https://wa.me/254700000000?text=Hello%20MedCore%20Solutions%2C%20I%20would%20like%20to%20enquire%20about%20your%20medical%20equipment." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <span class="whatsapp-tooltip">Chat with us</span>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Hamburger menu
+  function toggleMenu(){
+    const h = document.getElementById('hamburger');
+    const m = document.getElementById('mobileMenu');
+    const open = h.classList.toggle('open');
+    m.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function closeMenu(){
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Back to top
+  const btt = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btt.classList.toggle('visible', window.scrollY > 400);
+  });
+</script>
