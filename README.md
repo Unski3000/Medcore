@@ -11,7 +11,7 @@ This repository is intentionally lightweight: there is no package manager, build
 | `index.html` | Main landing page with hero messaging, company overview, product-category teasers, differentiators, testimonials, calls to action, responsive navigation, scroll reveal interactions, WhatsApp CTA, and back-to-top control. |
 | `medcore-products.html` | Product catalogue page with an in-page JavaScript product dataset, category tabs, text search, product cards, prices in KES, and quote links. |
 | `medcore-quote.html` | Three-step quote request experience: customer details, product/quantity selection with tiered pricing, review totals, and a generated `mailto:` request to sales. |
-| `medcore-contact.html` | Contact page with office/contact details, FAQ content, a contact form that generates a `mailto:` enquiry, WhatsApp CTA, and embedded map placeholder. |
+| `medcore-contact.html` | Contact page with contact details, FAQ content, a contact form that generates a `mailto:` enquiry, WhatsApp CTA, and generic map placeholder. |
 | `.github/workflows/jekyll-docker.yml` | GitHub Actions workflow that runs a Jekyll build in Docker on pushes and pull requests to `main`. |
 | `.nojekyll` | Tells GitHub Pages not to process the published static files through Jekyll conventions. |
 
@@ -53,7 +53,7 @@ Because this is a static site, the quote is not submitted to a backend. Completi
 
 ### Contact page
 
-`medcore-contact.html` provides address, phone/WhatsApp, sales/support email links, business hours, logistics notes, FAQs, and a contact form. The form validates required fields in the browser and then opens a prefilled `mailto:info@medcoresolutions.com` enquiry.
+`medcore-contact.html` provides phone/WhatsApp, sales/support email links, business hours, logistics notes, FAQs, a blank address area, and a contact form. The form validates required fields in the browser and then opens a prefilled `mailto:info@medcoresolutions.com` enquiry.
 
 ## Styling and frontend architecture
 

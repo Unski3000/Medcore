@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Contact MedCore Solutions — reach our sales team, technical support or visit us at Nairobi, Kenya."/>
+<meta name="description" content="Contact MedCore Solutions — reach our sales team, technical support, or request help with medical equipment procurement."/>
 <meta property="og:title" content="Contact Us — MedCore Solutions"/>
 <meta property="og:type" content="website"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E8C8C'/><text y='.9em' font-size='72' x='50%' dominant-baseline='auto' text-anchor='middle' font-family='serif' fill='white'>M</text></svg>"/>
@@ -85,8 +85,11 @@ textarea{resize:vertical;min-height:120px;}
 .map-section{margin-top:48px;}
 .map-section h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--navy);margin-bottom:6px;}
 .map-section p{font-size:14px;color:var(--text-mid);margin-bottom:20px;}
-.map-wrap{border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px rgba(11,31,58,0.07);}
-.map-wrap iframe{width:100%;height:380px;display:block;border:none;}
+.map-wrap{border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px rgba(11,31,58,0.07);background:linear-gradient(135deg,rgba(14,140,140,0.08),rgba(200,155,60,0.08));}
+.map-placeholder{min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:var(--text-mid);}
+.map-placeholder-icon{width:64px;height:64px;border-radius:18px;background:white;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;box-shadow:0 4px 18px rgba(11,31,58,0.08);}
+.map-placeholder strong{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.map-placeholder span{font-size:14px;line-height:1.7;max-width:440px;}
 
 /* FAQ */
 .faq-section{margin-top:56px;}
@@ -127,7 +130,7 @@ footer a:hover{color:var(--teal-light);}
   .form-grid{grid-template-columns:1fr;}
   .form-group.full{grid-column:1;}
   .form-card{padding:24px 18px;}
-  .map-wrap iframe{height:260px;}
+  .map-placeholder{min-height:260px;}
   input,select,textarea{font-size:15px;}
 }
 </style>
@@ -163,7 +166,7 @@ footer a:hover{color:var(--teal-light);}
       <div class="info-card">
         <div class="info-card-icon">📍</div>
         <h3>Visit Us</h3>
-        <p>Southern House, Murang'a Road<br/>Opposite Meridian Hotel<br/>Nairobi, Kenya<br/>P.O. Box 2363 – 00200</p>
+        <p class="address-placeholder"></p>
       </div>
 
       <div class="info-card">
@@ -235,7 +238,7 @@ footer a:hover{color:var(--teal-light);}
           </div>
           <div class="form-group full">
             <label>Organisation / Facility</label>
-            <input type="text" id="cfOrg" placeholder="e.g. Nairobi General Hospital"/>
+            <input type="text" id="cfOrg" placeholder="e.g. Metro General Hospital"/>
           </div>
           <div class="form-group full">
             <label>Subject <span>*</span></label>
@@ -272,14 +275,14 @@ footer a:hover{color:var(--teal-light);}
 
   <!-- MAP -->
   <div class="map-section">
-    <h2>Find Us</h2>
-    <p>Nairobi, Kenya.</p>
-    <div class="map-wrap">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.819588609789!2d36.82316!3d-1.2833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d7d5f5a5a5%3A0x0!2sMurang'a%20Road%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1700000000000"
-        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="MedCore Solutions location on Google Maps">
-      </iframe>
+    <h2>Service Area</h2>
+    <p></p>
+    <div class="map-wrap" aria-label="Generic service area map placeholder">
+      <div class="map-placeholder">
+        <div class="map-placeholder-icon">🗺️</div>
+        <strong>Map details coming soon</strong>
+        <span>Contact our team for directions, delivery coverage, and service-area information.</span>
+      </div>
     </div>
   </div>
 
@@ -293,7 +296,7 @@ footer a:hover{color:var(--teal-light);}
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">How long does delivery take?</div>
-        <div class="faq-a">In-stock items are dispatched within 48 hours. Delivery across Nairobi is typically 1–2 business days. Upcountry Kenya takes 2–4 business days. International orders vary by destination.</div>
+        <div class="faq-a">In-stock items are dispatched within 48 hours. Local deliveries are typically 1–2 business days. Regional deliveries across Kenya take 2–4 business days. International orders vary by destination.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">Are all products certified and approved?</div>
@@ -332,7 +335,7 @@ footer a:hover{color:var(--teal-light);}
     <a href="medcore-quote.html">Get a Quote</a>
     <a href="medcore-contact.html">Contact</a>
   </p>
-  <p style="margin-top:12px;">© 2026 MedCore Solutions. All rights reserved. · Southern House, Murang'a Road, Nairobi, Kenya.</p>
+  <p style="margin-top:12px;">© 2026 MedCore Solutions. All rights reserved.</p>
 </footer>
 
 <!-- WHATSAPP -->
