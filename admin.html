@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedCore Admin — Products & Quotations</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1F3A;--teal:#0E8C8C;--gold:#C89B3C;--bg:#EEF2F7;--line:#DDE5EF;--text:#3B5070;--ok:#1A9E6E;--bad:#D94F4F}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--navy)}header{background:linear-gradient(135deg,var(--navy),#12305A);color:white;padding:28px 5vw}header h1{font-family:'Cormorant Garamond',serif;font-size:42px;margin:0 0 6px}header p{margin:0;color:rgba(255,255,255,.7)}main{max-width:1280px;margin:0 auto;padding:28px 5vw 60px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 4px 24px rgba(11,31,58,.06);margin-bottom:24px}.card h2{font-family:'Cormorant Garamond',serif;font-size:28px;margin:0 0 14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px}textarea{min-height:78px;resize:vertical}.checks{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.checks label{display:flex;gap:7px;align-items:center;margin:0}.checks input{width:auto}button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer;background:var(--teal);color:white}button.secondary{background:var(--navy)}button.ghost{background:#EEF2F7;color:var(--navy)}button.danger{background:var(--bad)}table{width:100%;border-collapse:collapse}th{text-align:left;font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--text);border-bottom:2px solid var(--line);padding:10px 8px}td{border-bottom:1px solid var(--line);padding:10px 8px;font-size:13px;vertical-align:top}.muted{color:var(--text);font-size:13px}.pill{display:inline-block;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:700;background:#EEF2F7;color:var(--text)}.pill.on{background:rgba(26,158,110,.12);color:var(--ok)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.quote-link{display:none;margin-top:12px;padding:12px;border:1px solid rgba(14,140,140,.25);background:rgba(14,140,140,.07);border-radius:10px}.quote-link a{color:var(--teal);font-weight:700}#toast{position:fixed;right:20px;bottom:20px;background:var(--navy);color:white;padding:12px 16px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.2);display:none}@media(max-width:900px){.grid,.form-grid{grid-template-columns:1fr}main{padding:20px 16px}.card{padding:16px}table{display:block;overflow:auto}}
+</style>
+</head>
+<body>
+<header><h1>MedCore Admin</h1><p>Manage product visibility, featured products, company quote settings, and automated quotations.</p></header>
+<main>
+  <div class="grid">
+    <section>
+      <div class="card">
+        <h2>Product Control</h2>
+        <form id="productForm">
+          <input type="hidden" id="productId">
+          <div class="form-grid">
+            <div><label>Name</label><input id="productName" required></div>
+            <div><label>Category</label><input id="productCategory" required></div>
+            <div><label>Code / SKU</label><input id="productCode"></div>
+            <div><label>Unit Price</label><input id="productPrice" type="number" min="0" step="0.01" required></div>
+            <div><label>Unit</label><input id="productUnit" placeholder="unit"></div>
+            <div><label>Sort Order</label><input id="productSort" type="number" min="0"></div>
+            <div class="full"><label>Image URL</label><input id="productImage"></div>
+            <div class="full"><label>Description</label><textarea id="productDescription"></textarea></div>
+            <div class="full checks">
+              <label><input type="checkbox" id="productActive" checked> Visible on frontend</label>
+              <label><input type="checkbox" id="productFeatured"> Featured</label>
+              <label><input type="checkbox" id="productTaxable" checked> Taxable</label>
+            </div>
+          </div>
+          <div class="actions"><button type="submit">Save product</button><button type="button" class="ghost" onclick="resetProductForm()">New product</button></div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Products</h2>
+        <p class="muted">Only active products are exposed to the public catalogue. Featured products can be surfaced on the frontend through <code>/api/products?featured=true</code>.</p>
+        <table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody id="productRows"></tbody></table>
+      </div>
+    </section>
+    <aside>
+      <div class="card">
+        <h2>Company Quote Settings</h2>
+        <form id="companyForm">
+          <div class="form-grid">
+            <div><label>Company Name</label><input id="companyName"></div>
+            <div><label>Currency</label><input id="companyCurrency"></div>
+            <div><label>Email</label><input id="companyEmail"></div>
+            <div><label>Phone</label><input id="companyPhone"></div>
+            <div><label>Tax Rate</label><input id="companyTax" type="number" min="0" max="1" step="0.01"></div>
+            <div class="full"><label>Address Lines</label><textarea id="companyAddress"></textarea></div>
+          </div>
+          <div class="actions"><button type="submit">Save company settings</button></div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Generate Quotation</h2>
+        <form id="quoteForm">
+          <div class="form-grid">
+            <div><label>Customer Name</label><input id="customerName" required></div>
+            <div><label>Organisation</label><input id="customerOrg"></div>
+            <div><label>Email</label><input id="customerEmail" type="email"></div>
+            <div><label>Phone</label><input id="customerPhone"></div>
+            <div class="full"><label>Customer Address</label><textarea id="customerAddress"></textarea></div>
+            <div><label>Product</label><select id="quoteProduct"></select></div>
+            <div><label>Quantity</label><input id="quoteQty" type="number" min="1" value="1"></div>
+            <div class="full"><label>Notes</label><textarea id="quoteNotes">Quotation is subject to product availability and final confirmation.</textarea></div>
+          </div>
+          <div class="actions"><button type="submit">Generate automated quote</button></div>
+        </form>
+        <div id="quoteLink" class="quote-link"></div>
+      </div>
+      <div class="card">
+        <h2>Recent Quotations</h2>
+        <table><thead><tr><th>Quote</th><th>Total</th><th></th></tr></thead><tbody id="quoteRows"></tbody></table>
+      </div>
+    </aside>
+  </div>
+</main>
+<div id="toast"></div>
+<script>
+let products=[];
+function money(n,c='KES'){return c+' '+Number(n).toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',2600);}
+async function api(path, options={}){const res=await fetch(path,{headers:{'Content-Type':'application/json'},...options});if(!res.ok){const err=await res.json().catch(()=>({error:'Request failed'}));throw new Error(err.error||'Request failed');}return res.status===204?null:res.json();}
+async function loadProducts(){products=await api('/api/products?admin=true');document.getElementById('quoteProduct').innerHTML=products.filter(p=>p.active).map(p=>`<option value="${p.id}">${p.name} — ${money(p.price)}</option>`).join('');document.getElementById('productRows').innerHTML=products.map(p=>`<tr><td><strong>${p.name}</strong><br><span class="muted">${p.code||p.id}</span></td><td>${p.category}</td><td>${money(p.price)}</td><td><span class="pill ${p.active?'on':''}">${p.active?'Visible':'Hidden'}</span> <span class="pill ${p.featured?'on':''}">${p.featured?'Featured':'Standard'}</span></td><td><button class="ghost" onclick="editProduct('${p.id}')">Edit</button></td></tr>`).join('');}
+async function loadCompany(){const c=await api('/api/company');companyName.value=c.name||'';companyCurrency.value=c.currency||'KES';companyEmail.value=c.email||'';companyPhone.value=c.phone||'';companyTax.value=c.taxRate??0.16;companyAddress.value=(c.addressLines||[]).join('\n');}
+async function loadQuotes(){const quotes=await api('/api/quotations');document.getElementById('quoteRows').innerHTML=quotes.slice(0,8).map(q=>`<tr><td>${q.id}<br><span class="muted">${new Date(q.createdAt).toLocaleDateString()}</span></td><td>${money(q.total,q.currency)}</td><td><a href="/api/quotations/${q.id}/html" target="_blank">Open</a></td></tr>`).join('')||'<tr><td colspan="3" class="muted">No quotations yet.</td></tr>';}
+function editProduct(id){const p=products.find(x=>x.id===id);productId.value=p.id;productName.value=p.name;productCategory.value=p.category;productCode.value=p.code||'';productPrice.value=p.price;productUnit.value=p.unit||'unit';productSort.value=p.sortOrder||'';productImage.value=p.imageUrl||'';productDescription.value=p.description||'';productActive.checked=p.active;productFeatured.checked=p.featured;productTaxable.checked=p.taxable!==false;window.scrollTo({top:0,behavior:'smooth'});}
+function resetProductForm(){productForm.reset();productId.value='';productActive.checked=true;productTaxable.checked=true;productFeatured.checked=false;}
+productForm.addEventListener('submit',async e=>{e.preventDefault();const payload={id:productId.value||undefined,name:productName.value,category:productCategory.value,code:productCode.value,price:Number(productPrice.value),unit:productUnit.value||'unit',sortOrder:Number(productSort.value||9999),imageUrl:productImage.value,description:productDescription.value,active:productActive.checked,featured:productFeatured.checked,taxable:productTaxable.checked};await api(productId.value?`/api/products/${productId.value}`:'/api/products',{method:productId.value?'PUT':'POST',body:JSON.stringify(payload)});toast('Product saved');resetProductForm();loadProducts();});
+companyForm.addEventListener('submit',async e=>{e.preventDefault();await api('/api/company',{method:'PUT',body:JSON.stringify({name:companyName.value,currency:companyCurrency.value,email:companyEmail.value,phone:companyPhone.value,taxRate:Number(companyTax.value),addressLines:companyAddress.value.split('\n').map(x=>x.trim()).filter(Boolean)})});toast('Company settings saved');});
+quoteForm.addEventListener('submit',async e=>{e.preventDefault();const quote=await api('/api/quotations',{method:'POST',body:JSON.stringify({customer:{name:customerName.value,organisation:customerOrg.value,email:customerEmail.value,phone:customerPhone.value,address:customerAddress.value},items:[{productId:quoteProduct.value,quantity:Number(quoteQty.value)}],notes:quoteNotes.value})});quoteLink.style.display='block';quoteLink.innerHTML=`<strong>${quote.id}</strong> generated. Total: ${money(quote.total,quote.currency)} · <a href="${quote.links.html}" target="_blank">Open printable quote</a>`;loadQuotes();});
+Promise.all([loadProducts(),loadCompany(),loadQuotes()]).catch(err=>toast(err.message));
+</script>
+</body>
+</html>

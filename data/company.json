@@ -1,0 +1,12 @@
+{
+  "name": "MedCore Solutions",
+  "email": "sales@medcoresolutions.com",
+  "phone": "+254 700 000 000",
+  "addressLines": [
+    "Company address line 1",
+    "Company address line 2"
+  ],
+  "taxRate": 0.16,
+  "currency": "KES",
+  "logoSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 140\"><rect width=\"140\" height=\"140\" rx=\"24\" fill=\"#0E8C8C\"/><text x=\"70\" y=\"90\" text-anchor=\"middle\" font-size=\"76\" font-family=\"Georgia,serif\" font-weight=\"700\" fill=\"white\">M</text></svg>"
+}
