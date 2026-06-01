@@ -158,12 +158,12 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 <body>
 
 <nav>
-  <a class="nav-logo" href="medcore-landing.html">
+  <a class="nav-logo" href="index.html">
     <div class="nav-logo-mark">M</div>
     <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
   </a>
   <div class="nav-actions">
-    <a class="nav-back" href="medcore-landing.html">← Home</a>
+    <a class="nav-back" href="index.html">← Home</a>
     <a class="nav-quote" href="medcore-quote.html">Get a Quote</a>
   </div>
 </nav>
@@ -198,7 +198,7 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 </div>
 
 <script>
-const PRODUCTS = [
+let PRODUCTS = [
   // ── PHYSIOTHERAPY ─────────────────────────────────────────────
   {id:'PT001',name:'Kinesiology Tape',cat:'Physiotherapy',code:'KT-01',price:1500,img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80',desc:'Supports and relieves pain in muscles, joints and ligaments. Reduces swelling, increases mobility and aids recovery from sprains, strains and tendonitis.'},
   {id:'PT002',name:'Plaster of Paris Bandage 8"',cat:'Physiotherapy',code:'POP-08',price:120,img:'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=400&q=80',desc:'Bleached cotton cloth coated with Plaster of Paris powder. Widely used for bone fracture management and dislocation correction.'},
@@ -351,7 +351,7 @@ const PRODUCTS = [
 ];
 
 // Build unique categories
-const ALL_CATS = ['All', ...new Set(PRODUCTS.map(p=>p.cat))];
+let ALL_CATS = ['All', ...new Set(PRODUCTS.map(p=>p.cat))];
 
 let activeCategory = 'All';
 let searchQuery = '';
@@ -415,8 +415,28 @@ function renderProducts(){
     </div>`).join('');
 }
 
-buildCatTabs();
-renderProducts();
+async function loadManagedProducts(){
+  if(!window.fetch) return;
+  try{
+    const res = await fetch('/api/products');
+    if(!res.ok) return;
+    const managedProducts = await res.json();
+    if(Array.isArray(managedProducts) && managedProducts.length){
+      PRODUCTS = managedProducts;
+      ALL_CATS = ['All', ...new Set(PRODUCTS.map(p=>p.cat))];
+    }
+  }catch(error){
+    console.info('Using embedded product catalogue fallback.', error);
+  }
+}
+
+async function initProducts(){
+  await loadManagedProducts();
+  buildCatTabs();
+  renderProducts();
+}
+
+initProducts();
 
 // Back to top
 const btt=document.getElementById('btt');
