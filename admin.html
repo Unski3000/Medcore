@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; form-action 'self' mailto:; frame-src 'none'; upgrade-insecure-requests"/>
 <title>MedCore Admin — Products & Quotations</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -33,7 +34,7 @@
               <label><input type="checkbox" id="productTaxable" checked> Taxable</label>
             </div>
           </div>
-          <div class="actions"><button type="submit">Save product</button><button type="button" class="ghost" onclick="resetProductForm()">New product</button></div>
+          <div class="actions"><button type="submit">Save product</button><button type="button" class="ghost" id="newProductButton">New product</button></div>
         </form>
       </div>
       <div class="card">
@@ -82,20 +83,7 @@
   </div>
 </main>
 <div id="toast"></div>
-<script>
-let products=[];
-function money(n,c='KES'){return c+' '+Number(n).toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',2600);}
-async function api(path, options={}){const res=await fetch(path,{headers:{'Content-Type':'application/json'},...options});if(!res.ok){const err=await res.json().catch(()=>({error:'Request failed'}));throw new Error(err.error||'Request failed');}return res.status===204?null:res.json();}
-async function loadProducts(){products=await api('/api/products?admin=true');document.getElementById('quoteProduct').innerHTML=products.filter(p=>p.active).map(p=>`<option value="${p.id}">${p.name} — ${money(p.price)}</option>`).join('');document.getElementById('productRows').innerHTML=products.map(p=>`<tr><td><strong>${p.name}</strong><br><span class="muted">${p.code||p.id}</span></td><td>${p.category}</td><td>${money(p.price)}</td><td><span class="pill ${p.active?'on':''}">${p.active?'Visible':'Hidden'}</span> <span class="pill ${p.featured?'on':''}">${p.featured?'Featured':'Standard'}</span></td><td><button class="ghost" onclick="editProduct('${p.id}')">Edit</button></td></tr>`).join('');}
-async function loadCompany(){const c=await api('/api/company');companyName.value=c.name||'';companyCurrency.value=c.currency||'KES';companyEmail.value=c.email||'';companyPhone.value=c.phone||'';companyTax.value=c.taxRate??0.16;companyAddress.value=(c.addressLines||[]).join('\n');}
-async function loadQuotes(){const quotes=await api('/api/quotations');document.getElementById('quoteRows').innerHTML=quotes.slice(0,8).map(q=>`<tr><td>${q.id}<br><span class="muted">${new Date(q.createdAt).toLocaleDateString()}</span></td><td>${money(q.total,q.currency)}</td><td><a href="/api/quotations/${q.id}/html" target="_blank">Open</a></td></tr>`).join('')||'<tr><td colspan="3" class="muted">No quotations yet.</td></tr>';}
-function editProduct(id){const p=products.find(x=>x.id===id);productId.value=p.id;productName.value=p.name;productCategory.value=p.category;productCode.value=p.code||'';productPrice.value=p.price;productUnit.value=p.unit||'unit';productSort.value=p.sortOrder||'';productImage.value=p.imageUrl||'';productDescription.value=p.description||'';productActive.checked=p.active;productFeatured.checked=p.featured;productTaxable.checked=p.taxable!==false;window.scrollTo({top:0,behavior:'smooth'});}
-function resetProductForm(){productForm.reset();productId.value='';productActive.checked=true;productTaxable.checked=true;productFeatured.checked=false;}
-productForm.addEventListener('submit',async e=>{e.preventDefault();const payload={id:productId.value||undefined,name:productName.value,category:productCategory.value,code:productCode.value,price:Number(productPrice.value),unit:productUnit.value||'unit',sortOrder:Number(productSort.value||9999),imageUrl:productImage.value,description:productDescription.value,active:productActive.checked,featured:productFeatured.checked,taxable:productTaxable.checked};await api(productId.value?`/api/products/${productId.value}`:'/api/products',{method:productId.value?'PUT':'POST',body:JSON.stringify(payload)});toast('Product saved');resetProductForm();loadProducts();});
-companyForm.addEventListener('submit',async e=>{e.preventDefault();await api('/api/company',{method:'PUT',body:JSON.stringify({name:companyName.value,currency:companyCurrency.value,email:companyEmail.value,phone:companyPhone.value,taxRate:Number(companyTax.value),addressLines:companyAddress.value.split('\n').map(x=>x.trim()).filter(Boolean)})});toast('Company settings saved');});
-quoteForm.addEventListener('submit',async e=>{e.preventDefault();const quote=await api('/api/quotations',{method:'POST',body:JSON.stringify({customer:{name:customerName.value,organisation:customerOrg.value,email:customerEmail.value,phone:customerPhone.value,address:customerAddress.value},items:[{productId:quoteProduct.value,quantity:Number(quoteQty.value)}],notes:quoteNotes.value})});quoteLink.style.display='block';quoteLink.innerHTML=`<strong>${quote.id}</strong> generated. Total: ${money(quote.total,quote.currency)} · <a href="${quote.links.html}" target="_blank">Open printable quote</a>`;loadQuotes();});
-Promise.all([loadProducts(),loadCompany(),loadQuotes()]).catch(err=>toast(err.message));
-</script>
+<script src="assets/js/security.js" defer></script>
+<script src="assets/js/admin.js" defer></script>
 </body>
 </html>

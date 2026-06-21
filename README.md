@@ -110,3 +110,16 @@ The backend uses Node.js built-in modules and JSON files for persistence, so it 
 - Contact and public quote enquiry forms still use `mailto:` links; the backend quotation system is available through `/admin` and `/api/quotations`.
 - WhatsApp links currently use the placeholder number `+254700000000`; replace it with the production business number before launch.
 - Product imagery is loaded from external Unsplash URLs and may change or fail independently of this repository; each product card includes a visual fallback.
+
+## Frontend security hardening
+
+The GitHub Pages deployment cannot rely on custom HTTP response headers, so the static pages implement defense-in-depth controls directly in the HTML and JavaScript:
+
+- Each HTML page includes a meta tag-based Content Security Policy that limits scripts to same-origin files, blocks objects, restricts frames, limits image/font/style sources, and constrains form submissions to same-origin or `mailto:` destinations.
+- Inline event handlers and inline page scripts have been moved to same-origin files under `assets/js/` so the CSP can use `script-src 'self'` instead of allowing arbitrary inline JavaScript.
+- Dynamic UI rendering uses DOM APIs, `textContent`, and attribute assignment instead of string-based `innerHTML` rendering for user- or data-controlled values.
+- `assets/js/security.js` provides frame-busting logic for clickjacking mitigation because GitHub Pages cannot set `X-Frame-Options` or a response-header `frame-ancestors` policy.
+- Third-party iframe embeds have been removed; if an iframe is added later, it must use an explicit `sandbox` attribute and a narrowly scoped `allow` list.
+- User-facing forms use strict client-side regular expressions for names, organisations, email addresses, phone numbers, subjects, messages, product codes, URLs, quantities, and prices before building mailto links or API payloads.
+
+These browser-side fallbacks reduce XSS, DOM injection, and clickjacking risk for static hosting. They do not replace server-side validation for any future production backend, but they provide appropriate safeguards for a GitHub Pages-hosted frontend.
