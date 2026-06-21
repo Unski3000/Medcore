@@ -65,7 +65,7 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 .main{max-width:1280px;margin:0 auto;padding:32px 4vw 64px;}
 
 /* PRODUCT GRID */
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.product-grid,.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;padding-block:8px;overflow:visible;}
 
 /* PRODUCT CARD */
 .prod-card{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;will-change:transform;display:flex;flex-direction:column;}
@@ -104,7 +104,6 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 
 /* Tablet (≤900px) */
 @media(max-width:900px){
-  .products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
 }
 
 /* Mobile (≤640px) */
@@ -135,7 +134,6 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 
   /* Grid — 2 columns on most phones */
   .main{padding:20px 12px 48px;}
-  .products-grid{grid-template-columns:1fr 1fr;gap:12px;}
 
   /* Cards */
   .prod-img{height:130px;}
@@ -150,7 +148,6 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 
 /* Small phones (≤380px) — single column */
 @media(max-width:380px){
-  .products-grid{grid-template-columns:1fr;}
   .prod-img{height:160px;}
   .prod-desc{-webkit-line-clamp:unset;overflow:visible;}
 }
@@ -191,7 +188,7 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 
 <!-- Products Grid -->
 <div class="main">
-  <div class="products-grid" id="productsGrid"></div>
+  <div class="products-grid product-grid" id="productsGrid"></div>
   <div class="empty" id="emptyState" style="display:none;">
     <h3>No products found</h3>
     <p>Try a different search term or category.</p>

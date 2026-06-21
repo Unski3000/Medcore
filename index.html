@@ -399,8 +399,13 @@
 
   /* ── PRODUCTS ── */
   .products { background: var(--off-white); }
+  .product-grid,
   .products-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+    padding-block: 8px;
+    overflow: visible;
   }
   .product-card {
     background: white;
@@ -618,7 +623,6 @@
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
     .nav-links { display: none; }
-    .products-grid { grid-template-columns: 1fr 1fr; }
   }
 
   /* Mobile (≤640px) */
@@ -652,7 +656,6 @@
     .about-features { gap: 20px; }
 
     /* Products grid */
-    .products-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
     .product-card-visual { height: 140px; font-size: 40px; }
     .product-card-body { padding: 16px; }
     .product-card-body h3 { font-size: 17px; }
@@ -682,7 +685,6 @@
 
   /* Small phones (≤380px) */
   @media (max-width: 380px) {
-    .products-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 30px; }
   }
 </style>
@@ -857,7 +859,7 @@
     <h2 class="section-title">Equipment for Every Clinical Need</h2>
     <p class="section-sub">From ICU-grade devices to everyday consumables, our catalog spans the full spectrum of modern healthcare requirements.</p>
   </div>
-  <div class="products-grid">
+  <div class="products-grid product-grid">
     <div class="product-card reveal">
       <div class="product-card-visual pc-navy">🩻</div>
       <div class="product-card-body">
