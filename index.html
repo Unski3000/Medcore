@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; form-action 'self' mailto:; frame-src 'none'; upgrade-insecure-requests"/>
 <meta name="description" content="MedCore Solutions — Your trusted supplier of certified medical equipment, surgical instruments, laboratory devices and consumables for hospitals, clinics and healthcare providers."/>
 <meta property="og:title" content="MedCore Solutions — Precision Medical Equipment"/>
 <meta property="og:description" content="Certified medical equipment and consumables for hospitals, clinics and healthcare enterprises of every size."/>
@@ -701,20 +702,20 @@
     <li><a href="medcore-contact.html">Contact</a></li>
     <li><a href="medcore-quote.html" class="nav-cta">Get a Quote</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMenu()">
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMenu()">About</a>
-  <a href="medcore-products.html" onclick="closeMenu()">Products</a>
-  <a href="#why" onclick="closeMenu()">Why Us</a>
-  <a href="#testimonials" onclick="closeMenu()">Clients</a>
-  <a href="medcore-contact.html" onclick="closeMenu()">Contact</a>
+  <a href="#about" data-close-menu>About</a>
+  <a href="medcore-products.html" data-close-menu>Products</a>
+  <a href="#why" data-close-menu>Why Us</a>
+  <a href="#testimonials" data-close-menu>Clients</a>
+  <a href="medcore-contact.html" data-close-menu>Contact</a>
   <div class="mobile-menu-divider"></div>
-  <a href="medcore-quote.html" class="mob-cta" onclick="closeMenu()">Get a Quote →</a>
+  <a href="medcore-quote.html" class="mob-cta" data-close-menu>Get a Quote →</a>
 </div>
 
 <!-- HERO -->
@@ -1000,7 +1001,7 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a class="nav-logo" href="#" style="text-decoration:none;">
+      <a class="nav-logo footer-logo-link" href="#">
         <div class="nav-logo-mark">M</div>
         <span class="nav-logo-text">Med<span>Core</span> Solutions</span>
       </a>
@@ -1054,38 +1055,7 @@
 </a>
 
 <!-- BACK TO TOP -->
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
-<script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Hamburger menu
-  function toggleMenu(){
-    const h = document.getElementById('hamburger');
-    const m = document.getElementById('mobileMenu');
-    const open = h.classList.toggle('open');
-    m.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-  function closeMenu(){
-    document.getElementById('hamburger').classList.remove('open');
-    document.getElementById('mobileMenu').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  // Back to top
-  const btt = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    btt.classList.toggle('visible', window.scrollY > 400);
-  });
-</script>
+<script src="assets/js/security.js" defer></script>
+<script src="assets/js/index.js" defer></script>
