@@ -1,0 +1,14 @@
+{
+  "name": "medcore-solutions",
+  "version": "1.0.0",
+  "description": "Static MedCore website with a lightweight quotation and product-management backend.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node scripts/build-check.js",
+    "test": "node --test"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
