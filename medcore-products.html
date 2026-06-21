@@ -3,13 +3,90 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; form-action 'self' mailto:; frame-src 'none'; upgrade-insecure-requests"/>
-<meta name="description" content="Browse MedCore Solutions' full product catalogue — physiotherapy, orthopedic, laboratory, optical, surgical instruments, theatre equipment and consumables, all priced in KES."/>
-<meta property="og:title" content="Product Catalogue — MedCore Solutions"/>
-<meta property="og:description" content="112+ certified medical products across 9 categories. Browse and request a quote today."/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-+Mv1KK9d1e4fdWgypQl9Gd+6XZ6bO9+Oq7jbApr4QDA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; form-action 'self' mailto:; frame-src 'none'; upgrade-insecure-requests"/>
+<meta name="description" content="Hospital-grade medical equipment supplier for critical care, diagnostic imaging, laboratory, surgical, theatre and clinical consumables with certification documentation and reliable procurement support."/>
+<meta property="og:title" content="Hospital-Grade Medical Equipment Catalogue — MedCore Solutions"/>
+<meta property="og:description" content="Clinical and hospital-grade medical equipment with CE/FDA documentation available for procurement teams, clinics, and healthcare facilities."/>
 <meta property="og:type" content="website"/>
+<script type="application/ld+json" id="medical-device-schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Critical Care Equipment - MedCore Hospital Procurement Series",
+  "model": "MedCore Hospital Procurement Series",
+  "manufacturer": {
+    "@type": "Organization",
+    "name": "MedCore Solutions",
+    "url": "https://medcoresolutions.com/"
+  },
+  "category": [
+    "Critical Care Equipment",
+    "Diagnostic Imaging",
+    "Laboratory Equipment",
+    "Surgical Theatre Equipment",
+    "Medical Consumables"
+  ],
+  "description": "Hospital-grade medical equipment catalogue for healthcare procurement teams sourcing critical care, diagnostic, surgical, laboratory and clinical consumable products with compliance documentation available on request.",
+  "additionalType": "https://schema.org/MedicalDevice",
+  "subjectOf": {
+    "@type": "MedicalDevice",
+    "name": "Critical Care Equipment - MedCore Hospital Procurement Series",
+    "model": "MedCore Hospital Procurement Series",
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "MedCore Solutions"
+    },
+    "category": "Critical Care Equipment, Diagnostic Imaging and Hospital Infrastructure",
+    "regulatoryStatus": "FDA cleared / CE marked documentation available upon request",
+    "medicalSpecialty": [
+      "Emergency",
+      "CriticalCare",
+      "Surgical",
+      "LaboratoryScience"
+    ]
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Compliance Standards",
+      "value": "CE marked documentation available upon request"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Regulatory Status",
+      "value": "FDA cleared documentation available where applicable"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Procurement Use",
+      "value": "Hospital, clinic, laboratory and theatre procurement"
+    }
+  ],
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "availabilityStarts": "2026-06-21",
+    "businessFunction": "https://schema.org/Sell",
+    "itemCondition": "https://schema.org/NewCondition",
+    "inventoryLevel": {
+      "@type": "QuantitativeValue",
+      "value": "Available to order for hospital procurement",
+      "unitText": "Procurement availability"
+    },
+    "seller": {
+      "@type": "Organization",
+      "name": "MedCore Solutions"
+    },
+    "url": "https://medcoresolutions.com/medcore-products.html"
+  },
+  "audience": {
+    "@type": "BusinessAudience",
+    "audienceType": "Hospital procurement departments, clinics, laboratories and healthcare providers"
+  }
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230E8C8C'/><text y='.9em' font-size='72' x='50%' dominant-baseline='auto' text-anchor='middle' font-family='serif' fill='white'>M</text></svg>"/>
-<title>Our Products — MedCore Solutions</title>
+<title>Hospital-Grade Medical Equipment Catalogue — MedCore Solutions</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -42,6 +119,14 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 .hero-inner h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:600;color:white;margin-bottom:10px;line-height:1.15;}
 .hero-inner h1 em{font-style:normal;color:var(--gold);}
 .hero-inner p{font-size:15px;color:rgba(255,255,255,0.6);max-width:520px;line-height:1.7;font-weight:300;}
+
+
+/* SEO CONTENT */
+.seo-medical-overview{background:white;border-bottom:1px solid var(--border);padding:28px 4vw;}
+.seo-medical-overview .seo-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+.seo-medical-overview article{border:1px solid var(--border);border-radius:14px;padding:20px;background:var(--white);}
+.seo-medical-overview h2{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy);margin-bottom:8px;}
+.seo-medical-overview p{font-size:14px;line-height:1.7;color:var(--text-mid);font-weight:300;}
 
 /* SEARCH + FILTER BAR */
 .controls{background:white;border-bottom:1px solid var(--border);padding:20px 4vw;display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:sticky;top:68px;z-index:90;box-shadow:0 2px 16px rgba(11,31,58,0.06);}
@@ -169,10 +254,27 @@ nav{background:rgba(11,31,58,0.97);backdrop-filter:blur(12px);padding:0 4vw;heig
 <div class="hero-banner">
   <div class="hero-inner">
     <div class="hero-tag">Product Catalogue</div>
-    <h1>Medical Equipment &<br/><em>Consumables</em></h1>
-    <p>Explore our comprehensive range of hospital equipment, surgical instruments, laboratory devices, physiotherapy aids, and medical consumables — all competitively priced in KES.</p>
+    <h1>Critical Care Equipment - <em>MedCore Hospital Procurement Series</em></h1>
+    <p>Source hospital-grade critical care, diagnostic imaging, laboratory, theatre and clinical consumable products with compliance documentation and reliable procurement support for healthcare facilities.</p>
   </div>
 </div>
+
+<section class="seo-medical-overview" aria-labelledby="technical-specifications-heading">
+  <div class="seo-inner">
+    <article>
+      <h2 id="technical-specifications-heading">Technical Specifications</h2>
+      <p>Browse device categories by model, clinical use, item code, procurement category and configuration. Product teams can request detailed technical datasheets, installation requirements and service documentation before issuing purchase orders.</p>
+    </article>
+    <article>
+      <h2>Clinical Applications</h2>
+      <p>Equipment categories support hospital wards, theatre departments, intensive care, diagnostic laboratories, ophthalmology, physiotherapy, orthopaedic care, emergency response and routine clinical consumable workflows.</p>
+    </article>
+    <article>
+      <h2>Compliance Standards</h2>
+      <p>Regulatory documentation such as CE marking, FDA clearance where applicable, conformity declarations and supplier compliance files can be provided to procurement and biomedical engineering teams during quotation review.</p>
+    </article>
+  </div>
+</section>
 
 <!-- Search + Count -->
 <div class="controls">
