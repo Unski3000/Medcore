@@ -1,3 +1,4 @@
+import { createAuth } from './auth.js';
 import { createServer } from 'node:http';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -21,15 +22,24 @@ async function readJson(file, fallback) {
 }
 async function writeJson(file, data) { await fs.mkdir(path.dirname(file), { recursive: true }); await fs.writeFile(file, `${JSON.stringify(data, null, 2)}\n`); }
 async function readBody(req) {
-  let body = '';
-  for await (const chunk of req) body += chunk;
-  return body ? JSON.parse(body) : {};
+  if (!/^application\/json(?:;|$)/i.test(req.headers['content-type'] || '')) throw Object.assign(new Error('JSON content type required.'), { status: 415 });
+  let size = 0; const chunks = [];
+  for await (const chunk of req) {
+    size += chunk.length;
+    if (size > 65536) throw Object.assign(new Error('Request body too large.'), { status: 413 });
+    chunks.push(chunk);
+  }
+  try {
+    const body = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+    if (!body || Array.isArray(body) || typeof body !== 'object') throw new Error();
+    return body;
+  } catch { throw Object.assign(new Error('Invalid JSON object.'), { status: 400 }); }
 }
 function send(res, status, data, type = 'application/json; charset=utf-8') {
-  res.writeHead(status, { 'Content-Type': type, 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS' });
+  res.writeHead(status, { 'Content-Type': type });
   res.end(type.startsWith('application/json') ? JSON.stringify(data) : data);
 }
-function noContent(res) { res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS' }); res.end(); }
+function noContent(res) { res.writeHead(204); res.end(); }
 
 async function readProducts() { return (await readJson(PRODUCTS_FILE, [])).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.name.localeCompare(b.name)); }
 async function readCompany() {
@@ -79,18 +89,46 @@ function quotationHtml(quote) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; base-uri 'none'; object-src 'none'"><title>${htmlEscape(quote.id)} — Quotation</title><style>body{font-family:Arial,sans-serif;color:#0B1F3A;margin:0;background:#EEF2F7}.quote{max-width:960px;margin:32px auto;background:white;padding:44px;border-radius:18px;box-shadow:0 10px 40px rgba(11,31,58,.12)}header{display:flex;justify-content:space-between;gap:24px;border-bottom:3px solid #0E8C8C;padding-bottom:24px}.brand{display:flex;gap:16px;align-items:center}.brand img{width:72px;height:72px;border-radius:16px}.brand h1{margin:0;font-size:30px}.muted{color:#61738D;line-height:1.6}.title{text-align:right}.title h2{margin:0 0 8px;font-size:32px;color:#0E8C8C}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px 0}.box{border:1px solid #DDE5EF;border-radius:12px;padding:18px}.box h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#0E8C8C}table{width:100%;border-collapse:collapse;margin-top:24px}th{text-align:left;background:#0B1F3A;color:white;padding:12px;font-size:12px;text-transform:uppercase}td{padding:14px 12px;border-bottom:1px solid #DDE5EF}td span{font-size:12px;color:#61738D}.num{text-align:right;white-space:nowrap}.totals{margin-left:auto;margin-top:22px;width:330px}.totals div{display:flex;justify-content:space-between;padding:9px 0}.totals .grand{font-size:20px;font-weight:700;border-top:2px solid #0B1F3A;color:#0E8C8C}.actions{margin:0 auto 40px;max-width:960px;text-align:right}.actions button{background:#0E8C8C;color:white;border:0;border-radius:8px;padding:12px 18px;font-weight:700;cursor:pointer}@media print{body{background:white}.quote{box-shadow:none;margin:0;border-radius:0}.actions{display:none}}</style></head><body><main class="quote"><header><div class="brand">${logo ? `<img alt="Company logo" src="${logo}">` : ''}<div><h1>${htmlEscape(quote.company.name)}</h1><div class="muted">${address}<br>${htmlEscape(quote.company.email)} · ${htmlEscape(quote.company.phone)}</div></div></div><div class="title"><h2>Quotation</h2><div class="muted"><strong>${htmlEscape(quote.id)}</strong><br>Created: ${new Date(quote.createdAt).toLocaleDateString()}<br>Valid until: ${new Date(quote.expiresAt).toLocaleDateString()}</div></div></header><section class="grid"><div class="box"><h3>Prepared for</h3><strong>${htmlEscape(quote.customer.organisation || quote.customer.name)}</strong><div class="muted">${htmlEscape(quote.customer.name)}<br>${htmlEscape(quote.customer.email)}<br>${htmlEscape(quote.customer.phone)}<br>${htmlEscape(quote.customer.address)}</div></div><div class="box"><h3>Notes</h3><div class="muted">${htmlEscape(quote.notes)}</div></div></section><table><thead><tr><th>Item</th><th>Unit</th><th class="num">Qty</th><th class="num">Unit Price</th><th class="num">Tax</th><th class="num">Total</th></tr></thead><tbody>${rows}</tbody></table><section class="totals"><div><span>Subtotal</span><strong>${money(quote.subtotal, quote.currency)}</strong></div><div><span>Tax (${Math.round(quote.taxRate * 100)}%)</span><strong>${money(quote.taxAmount, quote.currency)}</strong></div><div class="grand"><span>Total</span><span>${money(quote.total, quote.currency)}</span></div></section></main><div class="actions"><p>Use your browser print dialog to save this quotation as PDF.</p></div></body></html>`;
 }
 
+// Explicit public files: never serve the repository or arbitrary asset paths.
+const PUBLIC_FILES = new Set([
+  'index.html', 'admin.html', 'medcore-products.html', 'medcore-contact.html', 'medcore-quote.html',
+  ...['admin', 'contact', 'index', 'products', 'quote', 'security'].map((name) => `assets/js/${name}.js`)
+]);
 async function serveStatic(pathname, res) {
-  const normalized = pathname === '/' ? '/index.html' : pathname === '/admin' ? '/admin.html' : pathname;
-  const filePath = path.join(__dirname, decodeURIComponent(normalized));
-  if (!filePath.startsWith(__dirname)) return send(res, 403, { error: 'Forbidden' });
-  try { const content = await fs.readFile(filePath); send(res, 200, content, MIME[path.extname(filePath)] || 'application/octet-stream'); }
-  catch { send(res, 404, { error: 'Not found' }); }
+  let decoded;
+  try { decoded = decodeURIComponent(pathname); } catch { return send(res, 400, { error: 'Invalid path' }); }
+  const file = decoded === '/' ? 'index.html' : decoded === '/admin' ? 'admin.html' : decoded.slice(1);
+  if (!PUBLIC_FILES.has(file)) return send(res, 404, { error: 'Not found' });
+  const filePath = path.resolve(__dirname, file);
+  try {
+    // Disallow symlink aliases even for explicitly allowed public files.
+    if (await fs.realpath(filePath) !== filePath) return send(res, 404, { error: 'Not found' });
+    const dataRoot = await fs.realpath(DATA_DIR).catch(() => path.resolve(DATA_DIR));
+    if (filePath === dataRoot || filePath.startsWith(dataRoot + path.sep)) return send(res, 404, { error: 'Not found' });
+    const content = await fs.readFile(filePath);
+    send(res, 200, content, MIME[path.extname(filePath)] || 'application/octet-stream');
+  } catch { send(res, 404, { error: 'Not found' }); }
 }
 
-async function route(req, res) {
-  if (req.method === 'OPTIONS') return noContent(res);
+async function route(req, res, auth) {
   const url = new URL(req.url, 'http://localhost');
   const { pathname, searchParams } = url;
+  if (pathname === '/api/auth/login' && req.method === 'POST') {
+    auth.checkOrigin(req);
+    return send(res, 200, await auth.login(req, res, await readBody(req)));
+  }
+  if (pathname === '/api/auth/session' && req.method === 'GET') {
+    const { username, csrfToken } = auth.requireStaff(req);
+    return send(res, 200, { username, csrfToken });
+  }
+  if (pathname === '/api/auth/logout' && req.method === 'POST') {
+    auth.logout(req, res); return noContent(res);
+  }
+  // Default deny for the entire API except the explicitly public active catalogue.
+  if (pathname.startsWith('/api/')) {
+    const publicCatalogue = req.method === 'GET' && pathname === '/api/products' && !searchParams.getAll('admin').includes('true');
+    if (!publicCatalogue) auth.requireStaff(req);
+  }
 
   if (pathname === '/api/company' && req.method === 'GET') return send(res, 200, await readCompany());
   if (pathname === '/api/company' && req.method === 'PUT') {
@@ -130,13 +168,20 @@ async function route(req, res) {
     if (!quote) throw Object.assign(new Error('Quotation not found.'), { status: 404 });
     return quoteMatch[2] ? send(res, 200, quotationHtml(quote), 'text/html; charset=utf-8') : send(res, 200, quote);
   }
+  if (pathname.startsWith('/api/')) return send(res, 404, { error: 'Not found' });
+  if (req.method !== 'GET') return send(res, 405, { error: 'Method not allowed' });
   return serveStatic(pathname, res);
 }
 
 export function createAppServer() {
+  const auth = createAuth();
   return createServer(async (req, res) => {
-    try { await route(req, res); }
-    catch (error) { send(res, error.status || 500, { error: error.message || 'Server error' }); }
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('Referrer-Policy', 'no-referrer');
+    try { await route(req, res, auth); }
+    catch (error) { send(res, error.status || 500, { error: error.status ? error.message : 'Server error' }); }
   });
 }
 
@@ -144,5 +189,5 @@ export const app = { listen: (...args) => createAppServer().listen(...args) };
 
 if (process.env.NODE_ENV !== 'test') {
   const port = Number(process.env.PORT || 3000);
-  createAppServer().listen(port, () => console.log(`MedCore backend running at http://localhost:${port}`));
+  createAppServer().listen(port, process.env.HOST || '127.0.0.1', () => console.log(`MedCore backend running at http://localhost:${port}`));
 }

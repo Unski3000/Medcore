@@ -2,10 +2,46 @@
   'use strict';
   const S = window.MedCoreSecurity;
   let products = [];
+  let csrfToken = null;
+  let sessionGeneration = 0;
   const byId = (id) => document.getElementById(id);
   const money = (n, c = 'KES') => `${c} ${Number(n).toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   function toast(msg) { const el = byId('toast'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 2600); }
-  async function api(path, options = {}) { const res = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...options }); if (!res.ok) { const err = await res.json().catch(() => ({ error: 'Request failed' })); throw new Error(err.error || 'Request failed'); } return res.status === 204 ? null : res.json(); }
+  function signedOut(message = '') {
+    sessionGeneration++;
+    csrfToken = null; products = [];
+    byId('staffPanel').hidden = true; byId('loginPanel').hidden = false;
+    byId('staffName').textContent = ''; byId('loginError').textContent = message;
+    ['productRows', 'quoteRows', 'quoteProduct', 'quoteLink'].forEach((id) => S.clear(byId(id)));
+    ['productForm', 'companyForm', 'quoteForm', 'loginForm'].forEach((id) => byId(id).reset());
+    byId('quoteLink').style.display = 'none';
+  }
+  async function api(path, options = {}) {
+    const generation = sessionGeneration;
+    const res = await fetch(path, { ...options, credentials: 'same-origin', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) } });
+    if (generation !== sessionGeneration) throw new Error('Session changed. Please sign in again.');
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Request failed' }));
+      if (res.status === 401 && path !== '/api/auth/login') signedOut('Your session has ended. Please sign in.');
+      throw new Error(err.error || 'Request failed');
+    }
+    const data = res.status === 204 ? null : await res.json();
+    if (generation !== sessionGeneration) throw new Error('Session changed. Please sign in again.');
+    return data;
+  }
+  async function signedIn(session) {
+    csrfToken = session.csrfToken;
+    byId('staffName').textContent = session.username;
+    await Promise.all([loadProducts(), loadCompany(), loadQuotes()]);
+    byId('loginPanel').hidden = true; byId('staffPanel').hidden = false;
+    byId('password').value = '';
+  }
+  function handleSubmit(id, handler) {
+    byId(id).addEventListener('submit', async (event) => {
+      try { await handler(event); } catch (error) { toast(error.message); }
+    });
+  }
   function addCell(row, text, className='') { const td = S.el('td', { className }); td.textContent = text; row.append(td); return td; }
   function statusPill(text, on) { return S.el('span', { className: `pill${on ? ' on' : ''}`, text }); }
   async function loadProducts() {
@@ -34,9 +70,21 @@
   function validProductPayload(payload) { return S.isValid(payload.name,'organisation') && S.isValid(payload.category,'subject') && S.isValid(String(payload.price),'price') && (!payload.code || S.isValid(payload.code,'productCode')) && (!payload.imageUrl || S.isValid(payload.imageUrl,'url')); }
   document.addEventListener('DOMContentLoaded', () => {
     byId('newProductButton')?.addEventListener('click', resetProductForm);
-    byId('productForm').addEventListener('submit', async (e) => { e.preventDefault(); const payload={ id:byId('productId').value||undefined, name:byId('productName').value.trim(), category:byId('productCategory').value.trim(), code:byId('productCode').value.trim(), price:Number(byId('productPrice').value), unit:byId('productUnit').value.trim()||'unit', sortOrder:Number(byId('productSort').value||9999), imageUrl:byId('productImage').value.trim(), description:byId('productDescription').value.trim(), active:byId('productActive').checked, featured:byId('productFeatured').checked, taxable:byId('productTaxable').checked }; if(!validProductPayload(payload)){ toast('Check product fields for valid values.'); return; } await api(payload.id?`/api/products/${encodeURIComponent(payload.id)}`:'/api/products',{method:payload.id?'PUT':'POST',body:JSON.stringify(payload)}); toast('Product saved'); resetProductForm(); loadProducts(); });
-    byId('companyForm').addEventListener('submit', async (e) => { e.preventDefault(); if(!S.isValid(byId('companyEmail').value,'email') || !S.isValid(byId('companyPhone').value,'phone') || !S.isValid(String(byId('companyTax').value),'price')){ toast('Check company email, phone, and tax rate.'); return; } await api('/api/company',{method:'PUT',body:JSON.stringify({name:byId('companyName').value.trim(),currency:byId('companyCurrency').value.trim(),email:byId('companyEmail').value.trim(),phone:byId('companyPhone').value.trim(),taxRate:Number(byId('companyTax').value),addressLines:byId('companyAddress').value.split('\n').map((x)=>x.trim()).filter(Boolean)})}); toast('Company settings saved'); });
-    byId('quoteForm').addEventListener('submit', async (e) => { e.preventDefault(); if(!S.isValid(byId('customerName').value,'name') || (byId('customerEmail').value && !S.isValid(byId('customerEmail').value,'email')) || !S.isValid(byId('quoteQty').value,'quantity')){ toast('Check quotation customer and quantity fields.'); return; } const quote=await api('/api/quotations',{method:'POST',body:JSON.stringify({customer:{name:byId('customerName').value.trim(),organisation:byId('customerOrg').value.trim(),email:byId('customerEmail').value.trim(),phone:byId('customerPhone').value.trim(),address:byId('customerAddress').value.trim()},items:[{productId:byId('quoteProduct').value,quantity:Number(byId('quoteQty').value)}],notes:byId('quoteNotes').value.trim()})}); const ql=byId('quoteLink'); ql.style.display='block'; S.clear(ql); ql.append(S.el('strong',{text:quote.id}), document.createTextNode(` generated. Total: ${money(quote.total,quote.currency)} · `), S.el('a',{href:quote.links.html,target:'_blank',rel:'noopener',text:'Open printable quote'})); loadQuotes(); });
-    Promise.all([loadProducts(), loadCompany(), loadQuotes()]).catch((err) => toast(err.message));
+    handleSubmit('productForm', async (e) => { e.preventDefault(); const payload={ id:byId('productId').value||undefined, name:byId('productName').value.trim(), category:byId('productCategory').value.trim(), code:byId('productCode').value.trim(), price:Number(byId('productPrice').value), unit:byId('productUnit').value.trim()||'unit', sortOrder:Number(byId('productSort').value||9999), imageUrl:byId('productImage').value.trim(), description:byId('productDescription').value.trim(), active:byId('productActive').checked, featured:byId('productFeatured').checked, taxable:byId('productTaxable').checked }; if(!validProductPayload(payload)){ toast('Check product fields for valid values.'); return; } await api(payload.id?`/api/products/${encodeURIComponent(payload.id)}`:'/api/products',{method:payload.id?'PUT':'POST',body:JSON.stringify(payload)}); toast('Product saved'); resetProductForm(); await loadProducts(); });
+    handleSubmit('companyForm', async (e) => { e.preventDefault(); if(!S.isValid(byId('companyEmail').value,'email') || !S.isValid(byId('companyPhone').value,'phone') || !S.isValid(String(byId('companyTax').value),'price')){ toast('Check company email, phone, and tax rate.'); return; } await api('/api/company',{method:'PUT',body:JSON.stringify({name:byId('companyName').value.trim(),currency:byId('companyCurrency').value.trim(),email:byId('companyEmail').value.trim(),phone:byId('companyPhone').value.trim(),taxRate:Number(byId('companyTax').value),addressLines:byId('companyAddress').value.split('\n').map((x)=>x.trim()).filter(Boolean)})}); toast('Company settings saved'); });
+    handleSubmit('quoteForm', async (e) => { e.preventDefault(); if(!S.isValid(byId('customerName').value,'name') || (byId('customerEmail').value && !S.isValid(byId('customerEmail').value,'email')) || !S.isValid(byId('quoteQty').value,'quantity')){ toast('Check quotation customer and quantity fields.'); return; } const quote=await api('/api/quotations',{method:'POST',body:JSON.stringify({customer:{name:byId('customerName').value.trim(),organisation:byId('customerOrg').value.trim(),email:byId('customerEmail').value.trim(),phone:byId('customerPhone').value.trim(),address:byId('customerAddress').value.trim()},items:[{productId:byId('quoteProduct').value,quantity:Number(byId('quoteQty').value)}],notes:byId('quoteNotes').value.trim()})}); const ql=byId('quoteLink'); ql.style.display='block'; S.clear(ql); ql.append(S.el('strong',{text:quote.id}), document.createTextNode(` generated. Total: ${money(quote.total,quote.currency)} · `), S.el('a',{href:quote.links.html,target:'_blank',rel:'noopener',text:'Open printable quote'})); await loadQuotes(); });
+    byId('loginForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); byId('loginButton').disabled = true; byId('loginError').textContent = '';
+      try {
+        const session = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ username: byId('username').value, password: byId('password').value }) });
+        await signedIn(session);
+      } catch (error) { signedOut(error.message); }
+      finally { byId('loginButton').disabled = false; byId('password').value = ''; }
+    });
+    byId('logoutButton').addEventListener('click', async () => {
+      try { await api('/api/auth/logout', { method: 'POST' }); signedOut(); }
+      catch (error) { toast(error.message); }
+    });
+    api('/api/auth/session').then(signedIn).catch((error) => signedOut(error.message));
   });
 })();
