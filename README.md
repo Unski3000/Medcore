@@ -49,7 +49,7 @@ Generated quotes can be opened at:
 /api/quotations/:id/html
 ```
 
-The printable quote page includes a **Print / Save PDF** action for operational use.
+The printable quote page requires a signed-in staff session. Use the browser print dialog to save a PDF for a customer; quotation URLs are not public sharing links.
 
 ## API overview
 
@@ -76,7 +76,7 @@ Install dependencies:
 npm install
 ```
 
-Run the backend and static site:
+Configure staff accounts and the origin as described below, then run the backend and static site:
 
 ```bash
 npm start
@@ -96,12 +96,54 @@ npm test
 npm run build
 ```
 
-- `npm test` runs backend API and quotation calculation tests.
+- `npm test` runs backend functionality and security regression tests for authorization, session lifecycle, CSRF/origin checks, login limits, configuration and private-file access. GitHub Actions runs these checks on pull requests.
 - `npm run build` validates HTML references, JSON data, and required product fields.
 
 ## Deployment notes
 
-The backend uses Node.js built-in modules and JSON files for persistence, so it can be deployed to a small VPS, container, or Node-compatible platform with writable storage. For a production-grade multi-user admin system, the next recommended steps are authentication, role-based access control, audit logs, and moving JSON persistence to PostgreSQL or another managed database.
+The backend requires Node.js 22 or newer and a writable persistent data directory. Authentication is enforced by the server: the active product catalogue remains public; all product writes, hidden-product reads (`admin=true`), company settings, and quotation creation/list/detail/HTML require a staff session. Every configured staff account has the same staff permissions, including access to all customer quotations. There is no customer account or public quotation retrieval API. The public enquiry wizard remains independent and uses mailto.
+
+### Required configuration
+
+| Variable | Configuration |
+| --- | --- |
+| `MEDCORE_STAFF_USERS` | JSON array of unique `{ "username": "...", "passwordHash": "scrypt$...$...", "role": "staff" }` records. Supply through a secret manager or protected service environment, never commit credentials. Empty, malformed or unsupported-role configuration prevents startup. |
+| `MEDCORE_ORIGIN` | Exact browser origin, without a trailing slash or path. Locally use `http://localhost:3000`; production must use the actual `https://` origin. |
+| `NODE_ENV` | Set to `production` on deployment; this requires HTTPS and secure cookies. |
+| `MEDCORE_DATA_DIR` | Absolute path to persistent private storage **outside the checkout and any web root**, readable/writable only by the service account. Defaults to `data/` for local development. |
+| `MEDCORE_SESSION_TTL_SECONDS` | Optional absolute session lifetime, 60–86400 seconds; default 28800 (8 hours). |
+| `HOST` / `PORT` | Defaults to `127.0.0.1` / `3000`. Set `HOST=0.0.0.0` only where container networking requires it, with the port protected from direct public traffic. |
+
+Create a unique strong password for each staff member in a password manager. Generate its salted scrypt hash from standard input (Bash example; the password is not passed in command arguments or saved in shell history):
+
+```bash
+read -r -s -p 'Staff password (at least 14 characters): ' staff_password
+printf '\n'
+printf '%s' "$staff_password" | node scripts/hash-password.js
+unset staff_password
+```
+
+Place the generated hash into that user's record in `MEDCORE_STAFF_USERS` through your deployment secret configuration. The hash format uses Node scrypt defaults (N=16384, r=8, p=1), a random 16-byte salt and a 64-byte derived key. No password or default account is bundled. For local use, set `MEDCORE_ORIGIN=http://localhost:3000` and provide the staff JSON through the environment before `npm start`. Open the admin interface on that exact origin. `.env` files are not automatically loaded.
+
+### HTTPS and private storage
+
+- Terminate HTTPS at a trusted reverse proxy and forward requests to the Node process. Proxy the application through Node; **do not serve the repository directory as a static web root**. A proxy, CDN or file server that independently exposes `data/` bypasses Node's file restrictions. Disable caching for `/api/` and `/admin` (Node sends `Cache-Control: no-store`).
+- Initialize a new private data directory from the sample `data/` files, then use that directory for all runtime state. Keep real customer quotations, company configuration, environment files and backups out of Git and static publishing. Existing Git history and static-host deployments are not secured by these backend changes.
+- GitHub Pages serves only static files and cannot run this authenticated backend. Publish only the public HTML and `assets/` when using static hosting; never publish the entire checkout with live data.
+- Browser sessions use random opaque IDs in `HttpOnly`, `SameSite=Strict` cookies with `Secure` on HTTPS. Session IDs and passwords are not stored in browser local storage. All state-changing authenticated requests require both an exact `Origin` match and the session's `X-CSRF-Token`; login requires the allowed origin and JSON. Cross-origin API access is not enabled.
+- Login attempts are limited to 10 per socket IP per 15 minutes, including successful attempts, with bounded in-memory state. Behind a proxy this limit is shared by clients on that proxy connection address. Forwarded IP headers are intentionally ignored. Add a trusted edge rate limiter for production and tune deliberately if shared limits are too restrictive.
+- Sessions and rate-limit counters live in one Node process. Restarting logs everyone out; removing a user or rotating a password requires updating configuration and restarting. Run a single instance; multiple instances require a shared session/rate-limit store. JSON persistence also remains unsuitable for concurrent writers or multiple instances; use a transactional database before scaling.
+- Additional recommended work: audit logging, MFA, finer-grained roles and transactional database persistence.
+
+### Authentication API
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/auth/login` | JSON `{ "username": "...", "password": "..." }`; returns username and CSRF token and sets the session cookie. |
+| `GET` | `/api/auth/session` | Returns the signed-in username and CSRF token; 401 without a valid session. |
+| `POST` | `/api/auth/logout` | Requires the session, allowed Origin and CSRF token; invalidates the session and expires the cookie. |
+
+Direct quotation links require the same staff cookie. API clients must retain the cookie and supply `Origin: <MEDCORE_ORIGIN>` and `X-CSRF-Token: <session token>` for mutations. Unknown API routes also require authentication by default. Static responses are restricted to explicitly listed public HTML/JavaScript files; JSON data, source code, dotfiles, encoded traversal and symlink aliases are not served.
 
 ## Maintenance notes
 
