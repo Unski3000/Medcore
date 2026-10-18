@@ -70,8 +70,10 @@ export function createAuth(env = process.env, now = Date.now) {
     const password = typeof body.password === 'string' && Buffer.byteLength(body.password) <= 1024 ? body.password : '';
     const actual = await deriveKey(password, salt, 64);
     if (!timingSafeEqual(actual, Buffer.from(expected, 'hex')) || !user) throw fail(401, 'Invalid username or password.');
-    if (sessions.size >= 1000) throw fail(503, 'Session capacity reached. Try again later.');
-    sessions.delete(token(req));
+    const previousToken = token(req);
+    // Replacing a live session does not consume an additional slot.
+    if (sessions.size >= 1000 && !sessions.has(previousToken)) throw fail(503, 'Session capacity reached. Try again later.');
+    sessions.delete(previousToken);
     const id = randomBytes(32).toString('hex');
     const current = { username: user.username, role: user.role, csrfToken: randomBytes(32).toString('hex'), expires: now() + ttl * 1000 };
     sessions.set(id, current);

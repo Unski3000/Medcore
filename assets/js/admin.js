@@ -75,8 +75,12 @@
     handleSubmit('quoteForm', async (e) => { e.preventDefault(); if(!S.isValid(byId('customerName').value,'name') || (byId('customerEmail').value && !S.isValid(byId('customerEmail').value,'email')) || !S.isValid(byId('quoteQty').value,'quantity')){ toast('Check quotation customer and quantity fields.'); return; } const quote=await api('/api/quotations',{method:'POST',body:JSON.stringify({customer:{name:byId('customerName').value.trim(),organisation:byId('customerOrg').value.trim(),email:byId('customerEmail').value.trim(),phone:byId('customerPhone').value.trim(),address:byId('customerAddress').value.trim()},items:[{productId:byId('quoteProduct').value,quantity:Number(byId('quoteQty').value)}],notes:byId('quoteNotes').value.trim()})}); const ql=byId('quoteLink'); ql.style.display='block'; S.clear(ql); ql.append(S.el('strong',{text:quote.id}), document.createTextNode(` generated. Total: ${money(quote.total,quote.currency)} · `), S.el('a',{href:quote.links.html,target:'_blank',rel:'noopener',text:'Open printable quote'})); await loadQuotes(); });
     byId('loginForm').addEventListener('submit', async (event) => {
       event.preventDefault(); byId('loginButton').disabled = true; byId('loginError').textContent = '';
+      // Preserve autofilled credentials while the initial probe settles and may reset the form.
+      const credentials = { username: byId('username').value, password: byId('password').value };
       try {
-        const session = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ username: byId('username').value, password: byId('password').value }) });
+        await initialSession;
+        byId('loginError').textContent = '';
+        const session = await api('/api/auth/login', { method: 'POST', body: JSON.stringify(credentials) });
         await signedIn(session);
       } catch (error) { signedOut(error.message); }
       finally { byId('loginButton').disabled = false; byId('password').value = ''; }
@@ -85,6 +89,6 @@
       try { await api('/api/auth/logout', { method: 'POST' }); signedOut(); }
       catch (error) { toast(error.message); }
     });
-    api('/api/auth/session').then(signedIn).catch((error) => signedOut(error.message));
+    const initialSession = api('/api/auth/session').then(signedIn).catch((error) => signedOut(error.message));
   });
 })();
