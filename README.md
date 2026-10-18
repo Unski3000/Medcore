@@ -8,7 +8,7 @@ The project is intentionally simple and deployable without a database server. St
 
 | File / directory | Purpose |
 | --- | --- |
-| `index.html` | Main landing page with hero messaging, company overview, product-category teasers, differentiators, testimonials, calls to action, responsive navigation, WhatsApp CTA, and back-to-top control. |
+| `index.html` | Main landing page with hero messaging, company overview, product-category teasers, differentiators, calls to action, responsive navigation, WhatsApp CTA, and back-to-top control. |
 | `medcore-products.html` | Public product catalogue. It loads managed products from `/api/products` when the backend is running and falls back to the embedded catalogue when opened statically. |
 | `medcore-quote.html` | Client-side quote request wizard retained for public enquiries. |
 | `medcore-contact.html` | Contact page with phone/WhatsApp, sales/support email links, business hours, logistics notes, FAQs, a blank address area, contact form, and generic map placeholder. |
